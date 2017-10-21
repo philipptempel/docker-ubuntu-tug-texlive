@@ -1,4 +1,5 @@
-FROM debian:stretch
+#FROM debian:stretch
+FROM ubuntu:xenial
 
 MAINTAINER Philipp Tempel <mail@philipptempel.me>
 
