@@ -20,3 +20,7 @@ RUN cd /tmp/ \
   && tar -xf install-tl-unx.tar.gz \
   && cd /tmp/install-tl-*/ \
   && ./install-tl -profile=/tmp/texlive.profile
+
+ENV PATH="/usr/local/texlive/2017/bin/x86_64-linux/:$PATH" \
+  MANPATH="/usr/local/texlive/2017/texmf-dist/doc/man:$MANPATH" \
+  INFOPATH="/usr/local/texlive/2017/texmf-dist/doc/info:$INFOPATH"
