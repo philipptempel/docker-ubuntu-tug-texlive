@@ -9,6 +9,7 @@ RUN apt-get update -qy \
   && apt-get dist-upgrade -qy
 
 RUN apt-get install -qy \
+  perl \
   python-pygments
 
 ADD http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz /tmp/
