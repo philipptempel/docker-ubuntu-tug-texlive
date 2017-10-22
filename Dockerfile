@@ -14,7 +14,7 @@ RUN apt-get install -qy \
   python-pygments
 
 ADD http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz /tmp/
-ADD https://gitlab.com/philipptempel/debian-texlive-pygments/raw/patch/ubuntu-16.04/texlive.profile /tmp/texlive.profile
+ADD https://gitlab.com/philipptempel/debian-texlive-pygments/raw/master/texlive.profile /tmp/texlive.profile
 
 RUN cd /tmp/ \
   && tar -xf install-tl-unx.tar.gz \
