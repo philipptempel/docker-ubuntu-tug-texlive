@@ -11,7 +11,8 @@ RUN apt-get update -qy \
 RUN apt-get install -qy \
   perl \
   wget \
-  python-pygments
+  python-pygments \
+  gnuplot
 
 ADD http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz /tmp/
 ADD https://raw.githubusercontent.com/philipptempel/docker-ubuntu-tug-texlive/master/texlive.profile /tmp/texlive.profile
