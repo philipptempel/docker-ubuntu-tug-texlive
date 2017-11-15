@@ -28,5 +28,6 @@ ENV PATH="/usr/local/texlive/2017/bin/x86_64-linux/:$PATH" \
   INFOPATH="/usr/local/texlive/2017/texmf-dist/doc/info:$INFOPATH"
 
 RUN luaotfload-tool --cache=erase \
+  && luaotfload-tool --force \
   && texhash
 
