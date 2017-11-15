@@ -11,6 +11,8 @@ RUN apt-get update -qy \
 RUN apt-get install -qy \
   perl \
   wget \
+  ghostscript \
+  imagemagick \
   python-pygments
 
 ADD http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz /tmp/
