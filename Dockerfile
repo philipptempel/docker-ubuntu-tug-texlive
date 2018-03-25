@@ -13,7 +13,11 @@ RUN apt-get install -qy \
   wget \
   ghostscript \
   imagemagick \
-  python-pygments
+  python-pygments \
+  gcc \
+  make \
+  musl-dev \
+  rsync
 
 ADD http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz /tmp/
 ADD https://raw.githubusercontent.com/philipptempel/docker-ubuntu-tug-texlive/master/texlive.profile /tmp/texlive.profile
