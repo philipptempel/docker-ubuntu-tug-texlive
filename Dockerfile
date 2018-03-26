@@ -6,7 +6,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -qy \
   && apt-get upgrade -qy \
-  && apt-get dist-upgrade -qy
+  && apt-get dist-upgrade -qy \
+  && apt-get update -qy
 
 RUN apt-get install -qy \
   perl \
