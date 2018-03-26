@@ -16,7 +16,7 @@ RUN apt-get install -qy \
   python-pygments \
   gcc \
   make \
-  musl-dev \
+  musl \
   rsync
 
 ADD http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz /tmp/
