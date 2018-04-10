@@ -14,6 +14,7 @@ RUN apt-get install -qy \
   wget \
   ghostscript \
   imagemagick \
+  python-pygments \
   python3-pygments \
   gcc \
   make \
