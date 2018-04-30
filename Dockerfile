@@ -20,7 +20,7 @@ RUN apt-get update -qy \
   musl \
   rsync
 
-ADD http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz /tmp/
+ADD ftp://tug.org/historic/systems/texlive/2017/install-tl-unx.tar.gz /tmp/
 ADD https://raw.githubusercontent.com/philipptempel/docker-ubuntu-tug-texlive/master/texlive.profile /tmp/texlive.profile
 
 RUN cd /tmp/ \
