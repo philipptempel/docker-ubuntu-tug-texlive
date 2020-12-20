@@ -18,7 +18,7 @@ texlive-infraonly-latest:
     - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-infraonly" --file infraonly/Dockerfile infraonly/
     - docker push "$CI_REGISTRY_IMAGE:latest-infraonly"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "latest"'
       changes:
         - ./*/Dockerfile
 
@@ -34,7 +34,7 @@ texlive-minimal-latest:
     - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-minimal" --file minimal/Dockerfile minimal/
     - docker push "$CI_REGISTRY_IMAGE:latest-minimal"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "latest"'
       changes:
         - ./*/Dockerfile
 
@@ -50,7 +50,7 @@ texlive-basic-latest:
     - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-basic" --file basic/Dockerfile basic/
     - docker push "$CI_REGISTRY_IMAGE:latest-basic"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "latest"'
       changes:
         - ./*/Dockerfile
 
@@ -66,7 +66,7 @@ texlive-small-latest:
     - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-small" --file small/Dockerfile small/
     - docker push "$CI_REGISTRY_IMAGE:latest-small"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "latest"'
       changes:
         - ./*/Dockerfile
 
@@ -82,7 +82,7 @@ texlive-medium-latest:
     - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-medium" --tag "$CI_REGISTRY_IMAGE:latest" --file medium/Dockerfile medium/
     - docker push "$CI_REGISTRY_IMAGE:latest-medium"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "latest"'
       changes:
         - ./*/Dockerfile
 
@@ -98,7 +98,7 @@ texlive-full-latest:
     - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-full" --file full/Dockerfile full/
     - docker push "$CI_REGISTRY_IMAGE:latest-full"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == "latest"'
       changes:
         - ./*/Dockerfile
 
