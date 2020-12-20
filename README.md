@@ -28,7 +28,7 @@ For any further adjustments of the GitLab CI configuration, please refer [to the
 ```yaml
 draft:
   stage: latexmk
-  image: philipptempel/docker-ubuntu-tug-texlive:2020-medium
+  image: philipptempel/docker-ubuntu-tug-texlive:latest-medium
   except:
     refs:
       - master
