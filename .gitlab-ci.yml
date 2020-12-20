@@ -1,0 +1,199 @@
+stages:
+  - infraonly
+  - minimal
+  - basic
+  - small
+  - medium
+  - full
+
+
+texlive-infraonly-latest:
+  image: docker:latest
+  stage: infraonly
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-infraonly" --file infraonly/Dockerfile infraonly/
+    - docker push "$CI_REGISTRY_IMAGE:latest-infraonly"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-minimal-latest:
+  image: docker:latest
+  stage: minimal
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-minimal" --file minimal/Dockerfile minimal/
+    - docker push "$CI_REGISTRY_IMAGE:latest-minimal"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-basic-latest:
+  image: docker:latest
+  stage: basic
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-basic" --file basic/Dockerfile basic/
+    - docker push "$CI_REGISTRY_IMAGE:latest-basic"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-small-latest:
+  image: docker:latest
+  stage: small
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-small" --file small/Dockerfile small/
+    - docker push "$CI_REGISTRY_IMAGE:latest-small"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-medium-latest:
+  image: docker:latest
+  stage: medium
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-medium" --tag "$CI_REGISTRY_IMAGE:latest" --file medium/Dockerfile medium/
+    - docker push "$CI_REGISTRY_IMAGE:latest-medium"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-full-latest:
+  image: docker:latest
+  stage: full
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-full" --file full/Dockerfile full/
+    - docker push "$CI_REGISTRY_IMAGE:latest-full"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-infraonly-archived:
+  image: docker:latest
+  stage: infraonly
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-infraonly" --file infraonly/Dockerfile infraonly/
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-infraonly"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-minimal-archived:
+  image: docker:latest
+  stage: minimal
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-minimal" --file minimal/Dockerfile minimal/
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-minimal"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-basic-archived:
+  image: docker:latest
+  stage: basic
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-basic" --file basic/Dockerfile basic/
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-basic"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-small-archived:
+  image: docker:latest
+  stage: small
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-small" --file small/Dockerfile small/
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-small"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-medium-archived:
+  image: docker:latest
+  stage: medium
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-medium" --file medium/Dockerfile medium/
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-medium"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      changes:
+        - ./*/Dockerfile
+
+
+texlive-full-archived:
+  image: docker:latest
+  stage: full
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-full" --tag "$CI_REGISTRY_IMAGE:latest" --file full/Dockerfile full/
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-full"
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      changes:
+        - ./*/Dockerfile
