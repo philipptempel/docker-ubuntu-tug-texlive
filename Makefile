@@ -2,7 +2,6 @@ SHELL=/bin/bash
 
 YEAR ?= latest
 IMAGE ?= philipptempel/docker-ubuntu-tug-texlive
-REPOSITORY ?= http://mirrors.ctan.org/systems/texlive/tlnet/
 
 SCHEMES = infraonly minimal basic small medium full
 SCHEMES_FULL = $(patsubst %,scheme-%,$(SCHEMES))
