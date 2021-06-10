@@ -4,7 +4,7 @@ A docker image based on Ubuntu with a full TeX Live suite and additional package
 
 ## How to Use the Image
 
-Choose the correct TeX Live version you want: from 2016 to 2020.
+Choose the correct TeX Live version you want: from 2016 to 2021.
 In addition, choose your desired scheme i.e., a collection of packages.
 We support all schemes that the TuG TeX Live offers.
 See also the matrices below for a list of docker images and their dependencies.
@@ -68,7 +68,8 @@ You may choose from the following images matrix
 
 | Scheme | infraonly        | minimal        | basic        | small        | medium        | full        |
 | ------ | ---------------- | -------------- | ------------ | ------------ | ------------- | ----------- |
-| 2020   | latest-infraonly | latest-minimal | latest-basic | latest-small | latest-medium | latest-full |
+| 2021   | latest-infraonly | latest-minimal | latest-basic | latest-small | latest-medium | latest-full |
+| 2020   | 2020-infraonly   | 2020-minimal   | 2020-basic   | 2020-small   | 2020-medium   | 2020-full   |
 | 2019   | 2019-infraonly   | 2019-minimal   | 2019-basic   | 2019-small   | 2019-medium   | 2019-full   |
 | 2018   | 2018-infraonly   | 2018-minimal   | 2018-basic   | 2018-small   | 2018-medium   | 2018-full   |
 | 2017   | 2017-infraonly   | 2017-minimal   | 2017-basic   | 2017-small   | 2017-medium   | 2017-full   |
