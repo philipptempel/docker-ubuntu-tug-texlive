@@ -1,6 +1,6 @@
 SHELL=/bin/bash
 
-YEAR ?= 2016
+YEAR ?= 2017
 IMAGE ?= philipptempel/docker-ubuntu-tug-texlive
 
 SCHEMES = infraonly minimal basic small medium full
