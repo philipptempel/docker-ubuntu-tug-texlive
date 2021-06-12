@@ -1,4 +1,4 @@
-FROM philipptempel/docker-ubuntu-tug-texlive:2017-medium
+FROM philipptempel/docker-ubuntu-tug-texlive:2018-medium
 
 MAINTAINER Philipp Tempel <docker@philipptempel.me>
 

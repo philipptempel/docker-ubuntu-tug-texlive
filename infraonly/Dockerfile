@@ -30,10 +30,10 @@ RUN apt-get update -qy \
 ADD texlive.profile /tmp/texlive/texlive.profile
 
 RUN cd /tmp/texlive/ \
-    && wget --user=anonymous --password=ftp --no-parent --no-verbose --no-directories ftp://tug.org/historic/systems/texlive/2017/tlnet-final/install-tl-unx.tar.gz \
+    && wget --user=anonymous --password=ftp --no-parent --no-verbose --no-directories ftp://tug.org/historic/systems/texlive/2018/tlnet-final/install-tl-unx.tar.gz \
     && tar -xvf install-tl-unx.tar.gz \
     && cd install-tl-*/ \
-    && ./install-tl -profile=/tmp/texlive/texlive.profile -repository=ftp://tug.org/historic/systems/texlive/2017/tlnet-final/
+    && ./install-tl -profile=/tmp/texlive/texlive.profile -repository=ftp://tug.org/historic/systems/texlive/2018/tlnet-final/
 
 ENV PATH="/usr/local/texlive/bin/x86_64-linux/:$PATH" \
   MANPATH="/usr/local/texlive/texmf-dist/doc/man:$MANPATH" \
