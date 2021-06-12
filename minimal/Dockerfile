@@ -1,4 +1,4 @@
-FROM philipptempel/docker-ubuntu-tug-texlive:2019-infraonly
+FROM philipptempel/docker-ubuntu-tug-texlive:2020-infraonly
 
 MAINTAINER Philipp Tempel <docker@philipptempel.me>
 
