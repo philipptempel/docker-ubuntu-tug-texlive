@@ -46,7 +46,7 @@ texlive-minimal-latest:
   extends: .latest-build
   stage: minimal
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-minimal"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-minimal" --file minimal/Dockerfile minimal/
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-minimal" --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-minimal" --file minimal/Dockerfile minimal/
     - docker push "$CI_REGISTRY_IMAGE:latest-minimal"
     - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-minimal"
 
@@ -55,7 +55,7 @@ texlive-basic-latest:
   extends: .latest-build
   stage: basic
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-basic"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-basic" --file basic/Dockerfile basic/
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-basic" --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-basic" --file basic/Dockerfile basic/
     - docker push "$CI_REGISTRY_IMAGE:latest-basic"
     - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-basic"
 
@@ -64,7 +64,7 @@ texlive-small-latest:
   extends: .latest-build
   stage: small
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-small"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-small" --file small/Dockerfile small/
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-small" --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-small" --file small/Dockerfile small/
     - docker push "$CI_REGISTRY_IMAGE:latest-small"
     - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-small"
 
@@ -73,8 +73,9 @@ texlive-medium-latest:
   extends: .latest-build
   stage: medium
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-medium"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-medium" --tag "$CI_REGISTRY_IMAGE:latest" --file medium/Dockerfile medium/
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-medium" --tag "$CI_REGISTRY_IMAGE:latest" --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-medium" --file medium/Dockerfile medium/
     - docker push "$CI_REGISTRY_IMAGE:latest-medium"
+    - docker push "$CI_REGISTRY_IMAGE:latest"
     - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-medium"
 
 
@@ -82,7 +83,7 @@ texlive-full-latest:
   extends: .latest-build
   stage: full
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-full"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-full" --file full/Dockerfile full/
+    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-full" --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-full"  --file full/Dockerfile full/
     - docker push "$CI_REGISTRY_IMAGE:latest-full"
     - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-full"
 
