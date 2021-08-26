@@ -18,118 +18,161 @@ stages:
 .latest-build:
   extends: .docker-build
   rules:
-    - if: '$CI_COMMIT_BRANCH == "latest"'
-      changes:
-        - ./*/Dockerfile
-        - ./.gitlab-ci.yml
+    - when: manual
+      if: $TEXLIVE_MODE == "latest"
+    - changes:
+        - ./latest/**
 
 
 .archived-build:
   extends: .docker-build
   rules:
-    - if: '$CI_COMMIT_TAG'
-      changes:
-        - ./*/Dockerfile
-        - ./.gitlab-ci.yml
+    - when: manual
+      if: $TEXLIVE_MODE == "archive"
 
 
 texlive-infraonly-latest:
   extends: .latest-build
   stage: infraonly
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-infraonly" --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-infraonly" --file infraonly/Dockerfile infraonly/
+    - docker build \
+      --pull \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-infraonly" \
+      --tag "$CI_REGISTRY_IMAGE:latest-infraonly" \
+      --file infraonly/Dockerfile \
+      infraonly/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-infraonly"
     - docker push "$CI_REGISTRY_IMAGE:latest-infraonly"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-infraonly"
 
 
 texlive-minimal-latest:
   extends: .latest-build
   stage: minimal
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-minimal"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-minimal" --file minimal/Dockerfile minimal/
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-minimal" \
+      --tag "$CI_REGISTRY_IMAGE:latest-minimal" \
+      --file minimal/Dockerfile \
+      minimal/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-minimal"
     - docker push "$CI_REGISTRY_IMAGE:latest-minimal"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-minimal"
 
 
 texlive-basic-latest:
   extends: .latest-build
   stage: basic
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-basic"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-basic" --file basic/Dockerfile basic/
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-basic" \
+      --tag "$CI_REGISTRY_IMAGE:latest-basic" \
+      --file basic/Dockerfile \
+      basic/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-basic"
     - docker push "$CI_REGISTRY_IMAGE:latest-basic"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-basic"
 
 
 texlive-small-latest:
   extends: .latest-build
   stage: small
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-small"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-small" --file small/Dockerfile small/
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-small" \
+      --tag "$CI_REGISTRY_IMAGE:latest-small" \
+      --file small/Dockerfile \
+      small/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-small"
     - docker push "$CI_REGISTRY_IMAGE:latest-small"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-small"
 
 
 texlive-medium-latest:
   extends: .latest-build
   stage: medium
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-medium"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-medium" --tag "$CI_REGISTRY_IMAGE:latest" --file medium/Dockerfile medium/
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-medium" \
+      --tag "$CI_REGISTRY_IMAGE:latest-medium" \
+      --tag "$CI_REGISTRY_IMAGE:latest" \
+      --file medium/Dockerfile \
+      medium/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-medium"
     - docker push "$CI_REGISTRY_IMAGE:latest-medium"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-medium"
 
 
 texlive-full-latest:
   extends: .latest-build
   stage: full
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:latest-full"  --tag "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-full" --file full/Dockerfile full/
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-full" \
+      --tag "$CI_REGISTRY_IMAGE:latest-full" \
+      --file full/Dockerfile \
+      full/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-full"
     - docker push "$CI_REGISTRY_IMAGE:latest-full"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_TEXLIVE_YEAR-full"
 
 
 texlive-infraonly-archived:
   extends: .archived-build
   stage: infraonly
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-infraonly" --file infraonly/Dockerfile infraonly/
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-infraonly"
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-infraonly" \
+      --file $TEXLIVE_YEAR/infraonly/Dockerfile \
+      $TEXLIVE_YEAR/infraonly/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-infraonly"
 
 
 texlive-minimal-archived:
   extends: .archived-build
   stage: minimal
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-minimal" --file minimal/Dockerfile minimal/
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-minimal"
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-minimal" \
+      --file $TEXLIVE_YEAR/minimal/Dockerfile \
+      $TEXLIVE_YEAR/minimal/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-minimal"
 
 
 texlive-basic-archived:
   extends: .archived-build
   stage: basic
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-basic" --file basic/Dockerfile basic/
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-basic"
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-basic" \
+      --file $TEXLIVE_YEAR/basic/Dockerfile \
+      $TEXLIVE_YEAR/basic/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-basic"
 
 
 texlive-small-archived:
   extends: .archived-build
   stage: small
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-small" --file small/Dockerfile small/
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-small"
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-small" \
+      --file $TEXLIVE_YEAR/small/Dockerfile \
+      $TEXLIVE_YEAR/small/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-small"
 
 
 texlive-medium-archived:
   extends: .archived-build
   stage: medium
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-medium" --file medium/Dockerfile medium/
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-medium"
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-medium"
+      --file $TEXLIVE_YEAR/medium/Dockerfile \
+      $TEXLIVE_YEAR/medium/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-medium"
 
 
 texlive-full-archived:
   extends: .archived-build
   stage: full
   script:
-    - docker build --pull --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-full" --tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" --file full/Dockerfile full/
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-full"
+    - docker build \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-full" \
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR" \
+      --file $TEXLIVE_YEAR/full/Dockerfile \
+      $TEXLIVE_YEAR/full/
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-full"
