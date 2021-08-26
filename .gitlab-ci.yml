@@ -20,8 +20,6 @@ stages:
   rules:
     - when: manual
       if: $TEXLIVE_MODE == "latest"
-    - changes:
-        - ./latest/**
 
 
 .archived-build:
