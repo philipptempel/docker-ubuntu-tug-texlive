@@ -18,15 +18,15 @@ stages:
 .latest-build:
   extends: .docker-build
   rules:
-    - when: manual
-      if: $TEXLIVE_MODE == "latest"
+    - if: $TEXLIVE_MODE == "latest"
+      if: $TEXLIVE_YEAR != ""
 
 
 .archived-build:
   extends: .docker-build
   rules:
-    - when: manual
-      if: $TEXLIVE_MODE == "archive"
+    - if: $TEXLIVE_MODE == "archive"
+      if: $TEXLIVE_YEAR != ""
 
 
 texlive-infraonly-latest:
