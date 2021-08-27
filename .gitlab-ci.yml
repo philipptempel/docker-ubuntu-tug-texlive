@@ -13,75 +13,71 @@ stages:
 .docker-push:
   extends: .docker
   stage: push
-  after_script:
-    - maker.sh push $TEXLIVE_YEAR $TEXLIVE_SCHEME
 
 .docker-build:
   extends: .docker
   stage: build
-  after_script:
-    - maker.sh build $TEXLIVE_YEAR $TEXLIVE_SCHEME
 
 
 infraonly-build:
   extends: .docker-build
   script:
-    - export TEXLIVE_SCHEME="infraonly"
+    - maker.sh build $TEXLIVE_YEAR "infraonly"
 
 minimal-build:
   extends: .docker-build
   needs:
     - infraonly-build
   script:
-    - export TEXLIVE_SCHEME="minimal"
+    - maker.sh build $TEXLIVE_YEAR "minimal"
 
 basic-build:
   extends: .docker-build
   needs:
     - minimal-build
   script:
-    - export TEXLIVE_SCHEME="basic"
+    - maker.sh build $TEXLIVE_YEAR "basic"
 
 small-build:
   extends: .docker-build
   needs:
     - basic-build
   script:
-    - export TEXLIVE_SCHEME="small"
+    - maker.sh build $TEXLIVE_YEAR "small"
 
 medium-build:
   extends: .docker-build
   needs:
     - small-build
   script:
-    - export TEXLIVE_SCHEME="medium"
+    - maker.sh build $TEXLIVE_YEAR "medium"
 
 full-build:
   extends: .docker-build
   needs:
     - medium-build
   script:
-    - export TEXLIVE_SCHEME="full"
+    - maker.sh build $TEXLIVE_YEAR "full"
 
 
 infraonly-push:
   extends: .docker-push
   script:
-    - export TEXLIVE_SCHEME="infraonly"
+    - maker.sh push $TEXLIVE_YEAR "infraonly"
 
 minimal-push:
   extends: .docker-push
   needs:
     - infraonly-push
   script:
-    - export TEXLIVE_SCHEME="minimal"
+    - maker.sh push $TEXLIVE_YEAR "minimal"
 
 basic-push:
   extends: .docker-push
   needs:
     - minimal-push
   script:
-    - export TEXLIVE_SCHEME="basic"
+    - maker.sh push $TEXLIVE_YEAR "basic"
 
 small-push:
   extends: .docker-push
@@ -95,11 +91,11 @@ medium-push:
   needs:
     - small-push
   script:
-    - export TEXLIVE_SCHEME="medium"
+    - maker.sh push $TEXLIVE_YEAR "medium"
 
 full-push:
   extends: .docker-push
   needs:
     - medium-push
-  script:
-    - export TEXLIVE_SCHEME="full"
+ script:
+    - maker.sh push $TEXLIVE_YEAR "full"
