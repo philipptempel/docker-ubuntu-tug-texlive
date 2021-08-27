@@ -1,176 +1,111 @@
 stages:
-  - infraonly
-  - minimal
-  - basic
-  - small
-  - medium
-  - full
+  - build
+  - push
 
 
-.docker-build:
+.docker:
   image: docker:latest
   services:
     - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
 
+.docker-push:
+  extends: .docker
+  stage: push
+  after_script:
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-$TEXLIVE_SCHEME"
 
-.latest-build:
+.docker-build:
+  extends: .docker
+  stage: build
+  after_script:
+    - |
+      docker build
+      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-$TEXLIVE_SCHEME"
+      --file "$TEXLIVE_YEAR/$TEXLIVE_SCHEME/Dockerfile"
+      $TEXLIVE_YEAR/$TEXLIVE_SCHEME/
+
+
+infraonly-build:
   extends: .docker-build
-  rules:
-    - if: $TEXLIVE_YEAR
-    - if: $TEXLIVE_MODE == "latest"
+  script:
+    - export TEXLIVE_SCHEME="infraonly"
 
-
-.archived-build:
+minimal-build:
   extends: .docker-build
-  rules:
-    - if: $TEXLIVE_YEAR
-    - if: $TEXLIVE_MODE == "archive"
-
-
-texlive-infraonly-latest:
-  extends: .latest-build
-  stage: infraonly
+  needs:
+    - infraonly-build
   script:
-    - docker build
-      --pull
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-infraonly"
-      --tag "$CI_REGISTRY_IMAGE:latest-infraonly"
-      --file infraonly/Dockerfile
-      infraonly/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-infraonly"
-    - docker push "$CI_REGISTRY_IMAGE:latest-infraonly"
+    - export TEXLIVE_SCHEME="minimal"
 
-
-texlive-minimal-latest:
-  extends: .latest-build
-  stage: minimal
+basic-build:
+  extends: .docker-build
+  needs:
+    - minimal-build
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-minimal"
-      --tag "$CI_REGISTRY_IMAGE:latest-minimal"
-      --file minimal/Dockerfile
-      minimal/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-minimal"
-    - docker push "$CI_REGISTRY_IMAGE:latest-minimal"
+    - export TEXLIVE_SCHEME="basic"
 
-
-texlive-basic-latest:
-  extends: .latest-build
-  stage: basic
+small-build:
+  extends: .docker-build
+  needs:
+    - basic-build
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-basic"
-      --tag "$CI_REGISTRY_IMAGE:latest-basic"
-      --file basic/Dockerfile
-      basic/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-basic"
-    - docker push "$CI_REGISTRY_IMAGE:latest-basic"
+    - export TEXLIVE_SCHEME="small"
 
-
-texlive-small-latest:
-  extends: .latest-build
-  stage: small
+medium-build:
+  extends: .docker-build
+  needs:
+    - small-build
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-small"
-      --tag "$CI_REGISTRY_IMAGE:latest-small"
-      --file small/Dockerfile
-      small/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-small"
-    - docker push "$CI_REGISTRY_IMAGE:latest-small"
+    - export TEXLIVE_SCHEME="medium"
 
-
-texlive-medium-latest:
-  extends: .latest-build
-  stage: medium
+full-build:
+  extends: .docker-build
+  needs:
+    - medium-build
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-medium"
-      --tag "$CI_REGISTRY_IMAGE:latest-medium"
-      --tag "$CI_REGISTRY_IMAGE:latest"
-      --file medium/Dockerfile
-      medium/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-medium"
-    - docker push "$CI_REGISTRY_IMAGE:latest-medium"
+    - export TEXLIVE_SCHEME="full"
 
 
-texlive-full-latest:
-  extends: .latest-build
-  stage: full
+infraonly-push:
+  extends: .docker-push
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-full"
-      --tag "$CI_REGISTRY_IMAGE:latest-full"
-      --file full/Dockerfile
-      full/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-full"
-    - docker push "$CI_REGISTRY_IMAGE:latest-full"
+    - export TEXLIVE_SCHEME="infraonly"
 
-
-texlive-infraonly-archived:
-  extends: .archived-build
-  stage: infraonly
+minimal-push:
+  extends: .docker-push
+  needs:
+    - infraonly-push
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-infraonly"
-      --file $TEXLIVE_YEAR/infraonly/Dockerfile
-      $TEXLIVE_YEAR/infraonly/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-infraonly"
+    - export TEXLIVE_SCHEME="minimal"
 
-
-texlive-minimal-archived:
-  extends: .archived-build
-  stage: minimal
+basic-push:
+  extends: .docker-push
+  needs:
+    - minimal-push
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-minimal"
-      --file $TEXLIVE_YEAR/minimal/Dockerfile
-      $TEXLIVE_YEAR/minimal/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-minimal"
+    - export TEXLIVE_SCHEME="basic"
 
-
-texlive-basic-archived:
-  extends: .archived-build
-  stage: basic
+small-push:
+  extends: .docker-push
+  needs:
+    - basic-push
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-basic"
-      --file $TEXLIVE_YEAR/basic/Dockerfile
-      $TEXLIVE_YEAR/basic/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-basic"
+    - export TEXLIVE_SCHEME="small"
 
-
-texlive-small-archived:
-  extends: .archived-build
-  stage: small
+medium-push:
+  extends: .docker-push
+  needs:
+    - small-push
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-small"
-      --file $TEXLIVE_YEAR/small/Dockerfile
-      $TEXLIVE_YEAR/small/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-small"
+    - export TEXLIVE_SCHEME="medium"
 
-
-texlive-medium-archived:
-  extends: .archived-build
-  stage: medium
+full-push:
+  extends: .docker-push
+  needs:
+    - medium-push
   script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-medium"
-      --file $TEXLIVE_YEAR/medium/Dockerfile
-      $TEXLIVE_YEAR/medium/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-medium"
-
-
-texlive-full-archived:
-  extends: .archived-build
-  stage: full
-  script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-full"
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR"
-      --file $TEXLIVE_YEAR/full/Dockerfile
-      $TEXLIVE_YEAR/full/
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-full"
+    - export TEXLIVE_SCHEME="full"
+  after_scriot:
+    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-$TEXLIVE_SCHEME"
