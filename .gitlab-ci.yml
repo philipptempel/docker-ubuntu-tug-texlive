@@ -14,16 +14,13 @@ stages:
   extends: .docker
   stage: push
   after_script:
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-$TEXLIVE_SCHEME"
+    - maker.sh push $TEXLIVE_YEAR $TEXLIVE_SCHEME
 
 .docker-build:
   extends: .docker
   stage: build
   after_script:
-    - docker build
-      --tag "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-$TEXLIVE_SCHEME"
-      --file "$TEXLIVE_YEAR/$TEXLIVE_SCHEME/Dockerfile"
-      $TEXLIVE_YEAR/$TEXLIVE_SCHEME/
+    - maker.sh build $TEXLIVE_YEAR $TEXLIVE_SCHEME
 
 
 infraonly-build:
@@ -106,5 +103,3 @@ full-push:
     - medium-push
   script:
     - export TEXLIVE_SCHEME="full"
-  after_script:
-    - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-$TEXLIVE_SCHEME"
