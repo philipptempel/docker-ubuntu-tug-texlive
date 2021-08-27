@@ -84,7 +84,7 @@ small-push:
   needs:
     - basic-push
   script:
-    - export TEXLIVE_SCHEME="small"
+    - maker.sh push $TEXLIVE_YEAR "small"
 
 medium-push:
   extends: .docker-push
@@ -97,5 +97,5 @@ full-push:
   extends: .docker-push
   needs:
     - medium-push
- script:
+  script:
     - maker.sh push $TEXLIVE_YEAR "full"
