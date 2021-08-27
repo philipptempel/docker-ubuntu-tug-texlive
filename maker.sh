@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [[ $# -ne 3 ]]; then
+if [ $# != 3 ]; then
     >&2 echo "Illegal number of parameters"
     return 1
 fi
