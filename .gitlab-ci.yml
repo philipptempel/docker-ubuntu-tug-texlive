@@ -7,101 +7,57 @@ stages:
   - full
 
 
-.docker:
+.docker-build:
   image: docker:latest
   services:
     - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
 
-.docker-push:
-  extends: .docker
 
-.docker-build:
-  extends: .docker
-
-
-infraonly-build:
+infraonly-scheme:
+  extends: .docker-build
   stage: infraonly
-  extends: .docker-build
   script:
-    - ./maker.sh build $TEXLIVE_YEAR "infraonly"
+    - ./maker.sh build "$TEXLIVE_YEAR" "infraonly"
+    - ./maker.sh push "$TEXLIVE_YEAR" "infraonly"
 
-minimal-build:
+
+minimal-scheme:
+  extends: .docker-build
   stage: minimal
-  extends: .docker-build
   script:
-    - ./maker.sh build $TEXLIVE_YEAR "minimal"
+    - ./maker.sh build "$TEXLIVE_YEAR" "minimal"
+    - ./maker.sh push "$TEXLIVE_YEAR" "minimal"
 
-basic-build:
+
+basic-scheme:
+  extends: .docker-build
   stage: basic
-  extends: .docker-build
   script:
-    - ./maker.sh build $TEXLIVE_YEAR "basic"
+    - ./maker.sh build "$TEXLIVE_YEAR" "basic"
+    - ./maker.sh push "$TEXLIVE_YEAR" "basic"
 
-small-build:
+
+small-scheme:
+  extends: .docker-build
   stage: small
-  extends: .docker-build
   script:
-    - ./maker.sh build $TEXLIVE_YEAR "small"
+    - ./maker.sh build "$TEXLIVE_YEAR" "small"
+    - ./maker.sh push "$TEXLIVE_YEAR" "small"
 
-medium-build:
+
+medium-scheme:
+  extends: .docker-build
   stage: medium
+  script:
+    - ./maker.sh build "$TEXLIVE_YEAR" "medium"
+    - ./maker.sh push "$TEXLIVE_YEAR" "medium"
+
+
+full-scheme:
   extends: .docker-build
-  script:
-    - ./maker.sh build $TEXLIVE_YEAR "medium"
-
-full-build:
   stage: full
-  extends: .docker-build
   script:
-    - ./maker.sh build $TEXLIVE_YEAR "full"
-
-
-infraonly-push:
-  stage: infraonly
-  extends: .docker-push
-  needs:
-    - infraonly-build
-  script:
-    - ./maker.sh push $TEXLIVE_YEAR "infraonly"
-
-minimal-push:
-  stage: minimal
-  extends: .docker-push
-  needs:
-    - minimal-build
-  script:
-    - ./maker.sh push $TEXLIVE_YEAR "minimal"
-
-basic-push:
-  stage: basic
-  extends: .docker-push
-  needs:
-    - basic-build
-  script:
-    - ./maker.sh push $TEXLIVE_YEAR "basic"
-
-small-push:
-  stage: small
-  extends: .docker-push
-  needs:
-    - small-build
-  script:
-    - ./maker.sh push $TEXLIVE_YEAR "small"
-
-medium-push:
-  stage: medium
-  extends: .docker-push
-  needs:
-    - medium-build
-  script:
-    - ./maker.sh push $TEXLIVE_YEAR "medium"
-
-full-push:
-  stage: full
-  extends: .docker-push
-  needs:
-    - full-build
-  script:
-    - ./maker.sh push $TEXLIVE_YEAR "full"
+    - ./maker.sh build "$TEXLIVE_YEAR" "full"
+    - ./maker.sh push "$TEXLIVE_YEAR" "full"
