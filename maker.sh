@@ -13,6 +13,7 @@ case $MAKER_ACTION in
   build)
     for MAKER_TEXLIVE_SCHEME in $MAKER_TEXLIVE_SCHEMES; do
       docker build \
+        --pull \
         --tag "$CI_REGISTRY_IMAGE:$MAKER_TEXLIVE_YEAR-$MAKER_TEXLIVE_SCHEME" \
         --file "$MAKER_TEXLIVE_YEAR/$MAKER_TEXLIVE_SCHEME/Dockerfile" \
         $MAKER_TEXLIVE_YEAR/$MAKER_TEXLIVE_SCHEME/
