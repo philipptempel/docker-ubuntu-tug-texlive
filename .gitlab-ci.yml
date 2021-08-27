@@ -21,81 +21,86 @@ stages:
 
 infraonly-build:
   extends: .docker-build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
   script:
-    - maker.sh build $TEXLIVE_YEAR "infraonly"
+    - ./maker.sh build $TEXLIVE_YEAR "infraonly"
 
 minimal-build:
   extends: .docker-build
   needs:
     - infraonly-build
   script:
-    - maker.sh build $TEXLIVE_YEAR "minimal"
+    - ./maker.sh build $TEXLIVE_YEAR "minimal"
 
 basic-build:
   extends: .docker-build
   needs:
     - minimal-build
   script:
-    - maker.sh build $TEXLIVE_YEAR "basic"
+    - ./maker.sh build $TEXLIVE_YEAR "basic"
 
 small-build:
   extends: .docker-build
   needs:
     - basic-build
   script:
-    - maker.sh build $TEXLIVE_YEAR "small"
+    - ./maker.sh build $TEXLIVE_YEAR "small"
 
 medium-build:
   extends: .docker-build
   needs:
     - small-build
   script:
-    - maker.sh build $TEXLIVE_YEAR "medium"
+    - ./maker.sh build $TEXLIVE_YEAR "medium"
 
 full-build:
   extends: .docker-build
   needs:
     - medium-build
   script:
-    - maker.sh build $TEXLIVE_YEAR "full"
+    - ./maker.sh build $TEXLIVE_YEAR "full"
 
 
 infraonly-push:
   extends: .docker-push
   script:
-    - maker.sh push $TEXLIVE_YEAR "infraonly"
+    - ./maker.sh push $TEXLIVE_YEAR "infraonly"
 
 minimal-push:
   extends: .docker-push
   needs:
     - infraonly-push
   script:
-    - maker.sh push $TEXLIVE_YEAR "minimal"
+    - ./maker.sh push $TEXLIVE_YEAR "minimal"
 
 basic-push:
   extends: .docker-push
   needs:
     - minimal-push
   script:
-    - maker.sh push $TEXLIVE_YEAR "basic"
+    - ./maker.sh push $TEXLIVE_YEAR "basic"
 
 small-push:
   extends: .docker-push
   needs:
     - basic-push
   script:
-    - maker.sh push $TEXLIVE_YEAR "small"
+    - ./maker.sh push $TEXLIVE_YEAR "small"
 
 medium-push:
   extends: .docker-push
   needs:
     - small-push
   script:
-    - maker.sh push $TEXLIVE_YEAR "medium"
+    - ./maker.sh push $TEXLIVE_YEAR "medium"
 
 full-push:
   extends: .docker-push
   needs:
     - medium-push
   script:
-    - maker.sh push $TEXLIVE_YEAR "full"
+    - ./maker.sh push $TEXLIVE_YEAR "full"
