@@ -107,5 +107,5 @@ full-push:
     - medium-push
   script:
     - export TEXLIVE_SCHEME="full"
-  after_scriot:
+  after_script:
     - docker push "$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR-$TEXLIVE_SCHEME"
