@@ -4,6 +4,8 @@ TEXLIVE_YEAR ?= latest
 CI_REGISTRY ?= registry.gitlab.com
 CI_PROJECT_PATH ?= philipptempel/docker-ubuntu-tug-texlive
 CI_REGISTRY_IMAGE ?= $(CI_REGISTRY)/$(CI_PROJECT_PATH)
+DOCKER_REGISTRY ?= docker.io
+DOCKER_PROJECT_PATH ?= philipptempel/docker-ubuntu-tug-texlive
 
 SCHEMES = infraonly minimal basic small medium full
 SCHEMES_FULL = $(patsubst %,scheme-%,$(SCHEMES))
@@ -30,11 +32,17 @@ push: $(PUSHES_FULL)
 
 # Generic scheme target
 scheme-%:
-	CI_REGISTRY_IMAGE="$(CI_REGISTRY_IMAGE)" ./maker.sh build $(TEXLIVE_YEAR) $*
+	CI_REGISTRY_IMAGE="$(CI_REGISTRY_IMAGE)" \
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" \
+	DOCKER_PROJECT_PATH="$(DOCKER_PROJECT_PATH)" \
+	./maker.sh build $(TEXLIVE_YEAR) $*
 
 # Generic push target
 push-%:
-	CI_REGISTRY_IMAGE="$(CI_REGISTRY_IMAGE)" ./maker.sh push $(TEXLIVE_YEAR) $*
+	CI_REGISTRY_IMAGE="$(CI_REGISTRY_IMAGE)" \
+	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" \
+	DOCKER_PROJECT_PATH="$(DOCKER_PROJECT_PATH)" \
+	./maker.sh push $(TEXLIVE_YEAR) $*
 
 # Only infrastructure
 .PHONY: infraonly
@@ -58,12 +66,5 @@ medium: small scheme-medium push-medium
 
 # Full depends on medium
 .PHONY: full
-full: medium
-	echo "docker build \
-		--tag $(CI_REGISTRY_IMAGE):$(IMAGE_YEAR)-$* \
-		--tag $(CI_REGISTRY_IMAGE):$(IMAGE_YEAR) \
-		--file $(IMAGE_YEAR)/full/Dockerfile \
-		$(IMAGE_YEAR)/full/"
-	echo "docker push "$(CI_REGISTRY_IMAGE):$(IMAGE_YEAR)-full""
-	echo "docker push "$(CI_REGISTRY_IMAGE):$(IMAGE_YEAR)""
+full: medium scheme-full push-full
 
