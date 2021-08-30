@@ -18,7 +18,7 @@ if [ $MAKER_TEXLIVE_YEAR = "latest" ]; then
   TAGS="$TAGS $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:$CURRENT_YEAR-"
 fi
 
-# set -x
+set -x
 
 case $MAKER_ACTION in
   build)
