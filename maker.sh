@@ -49,12 +49,12 @@ case $MAKER_ACTION in
 
       # Push all other tags
       for TAG in $TAGS; do
-        docker push "$MAINTAG$MAKER_TEXLIVE_SCHEME" "$TAG$MAKER_TEXLIVE_SCHEME"
+        docker push "$TAG$MAKER_TEXLIVE_SCHEME"
       done
 
       # Push the "FULL" "un-schemed" image
       if [ $MAKER_TEXLIVE_SCHEME = "full" ]; then
-        docker push "$MAINTAG$MAKER_TEXLIVE_SCHEME" "`expr " $MAINTAG" : ' \(.*\).'`"
+        docker push "`expr " $MAINTAG" : ' \(.*\).'`"
       fi
 
     done
