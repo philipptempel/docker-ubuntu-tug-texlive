@@ -8,17 +8,17 @@ fi
 MAKER_ACTION="$1"; shift;
 MAKER_TEXLIVE_YEAR="$1"; shift;
 MAKER_TEXLIVE_SCHEMES="$@"
-
-MAINTAG="$CI_REGISTRY_IMAGE:$MAKER_TEXLIVE_YEAR-"
-TAGS="$CI_REGISTRY_IMAGE/$MAKER_TEXLIVE_YEAR: $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:$MAKER_TEXLIVE_YEAR-"
+MAKER_TEXLIVE_LATEST=false
 
 if [ $MAKER_TEXLIVE_YEAR = "latest" ]; then
-  CURRENT_YEAR=$(($(ls -d 2* | sort | tail -n 1) + 1))
-  TAGS="$TAGS $CI_REGISTRY_IMAGE/$CURRENT_YEAR:"
-  TAGS="$TAGS $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:$CURRENT_YEAR-"
+  MAKER_TEXLIVE_YEAR="2021"
+else
 fi
 
-set -x
+TAG_PREFIX="$CI_REGISTRY_IMAGE:$MAKER_TEXLIVE_YEAR-"
+TAG_OTHERS="$CI_REGISTRY_IMAGE/$MAKER_TEXLIVE_YEAR: $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:$MAKER_TEXLIVE_YEAR-"
+
+# set -x
 
 case $MAKER_ACTION in
   build)
@@ -26,36 +26,40 @@ case $MAKER_ACTION in
       # Build the main image
       docker build \
         --pull \
-        --tag $MAINTAG$MAKER_TEXLIVE_SCHEME \
+        --tag $TAG_PREFIX$MAKER_TEXLIVE_SCHEME \
         --file "$MAKER_TEXLIVE_YEAR/$MAKER_TEXLIVE_SCHEME/Dockerfile" \
         $MAKER_TEXLIVE_YEAR/$MAKER_TEXLIVE_SCHEME/
 
       # Loop over each additional tag
-      for TAG in $TAGS; do
-        docker tag "$MAINTAG$MAKER_TEXLIVE_SCHEME" "$TAG$MAKER_TEXLIVE_SCHEME"
+      for TAG_OTHER in $TAG_OTHERS; do
+        docker tag "$TAG_PREFIX$MAKER_TEXLIVE_SCHEME" "$TAG_OTHER$MAKER_TEXLIVE_SCHEME"
+        if [ $MAKER_TEXLIVE_LATEST ]; then
+          docker tag "$TAG_PREFIX$MAKER_TEXLIVE_SCHEME" "$( echo "$TAG_OTHER$MAKER_TEXLIVE_SCHEME" | sed s/$MAKER_TEXLIVE_YEAR/latest/g )"
+        fi
+        # Tag only the "FULL" scheme as an "un-schemed" image
+        if [ $MAKER_TEXLIVE_SCHEME = "full" ]; then
+          docker tag "$TAG_PREFIX$MAKER_TEXLIVE_SCHEME" "$( echo "$TAG_OTHER$MAKER_TEXLIVE_SCHEME" | sed s/$MAKER_TEXLIVE_YEAR.*/latest/g )"
+        fi
       done
-
-      # Tag only the "FULL" scheme as an "un-schemed" image
-      if [ $MAKER_TEXLIVE_SCHEME = "full" ]; then
-        docker tag "$MAINTAG$MAKER_TEXLIVE_SCHEME" "`expr " $MAINTAG" : ' \(.*\).'`"
-      fi
 
     done
     ;;
   push)
     for MAKER_TEXLIVE_SCHEME in $MAKER_TEXLIVE_SCHEMES; do
       # Push the main image
-      docker push "$MAINTAG$MAKER_TEXLIVE_SCHEME"
+      docker push "$TAG_PREFIX$MAKER_TEXLIVE_SCHEME"
 
-      # Push all other tags
-      for TAG in $TAGS; do
-        docker push "$TAG$MAKER_TEXLIVE_SCHEME"
+      # Loop over each additional tag
+      for TAG_OTHER in $TAG_OTHERS; do
+        docker push "$TAG_OTHER$MAKER_TEXLIVE_SCHEME"
+        if [ $MAKER_TEXLIVE_LATEST ]; then
+          docker push "$( echo "$TAG_OTHER$MAKER_TEXLIVE_SCHEME" | sed s/$MAKER_TEXLIVE_YEAR/latest/g )"
+        fi
+        # Tag only the "FULL" scheme as an "un-schemed" image
+        if [ $MAKER_TEXLIVE_SCHEME = "full" ]; then
+          docker push "$( echo "$TAG_OTHER$MAKER_TEXLIVE_SCHEME" | sed s/$MAKER_TEXLIVE_YEAR.*/latest/g )"
+        fi
       done
-
-      # Push the "FULL" "un-schemed" image
-      if [ $MAKER_TEXLIVE_SCHEME = "full" ]; then
-        docker push "`expr " $MAINTAG" : ' \(.*\).'`"
-      fi
 
     done
     ;;
