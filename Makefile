@@ -35,14 +35,14 @@ scheme-%:
 	CI_REGISTRY_IMAGE="$(CI_REGISTRY_IMAGE)" \
 	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" \
 	DOCKER_PROJECT_PATH="$(DOCKER_PROJECT_PATH)" \
-	./maker.sh build $(TEXLIVE_YEAR) $*
+	./src/maker.sh build $(TEXLIVE_YEAR) $*
 
 # Generic push target
 push-%:
 	CI_REGISTRY_IMAGE="$(CI_REGISTRY_IMAGE)" \
 	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" \
 	DOCKER_PROJECT_PATH="$(DOCKER_PROJECT_PATH)" \
-	./maker.sh push $(TEXLIVE_YEAR) $*
+	./src/maker.sh push $(TEXLIVE_YEAR) $*
 
 # Only infrastructure
 .PHONY: infraonly
