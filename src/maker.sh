@@ -27,8 +27,8 @@ case $MAKER_ACTION in
       docker build \
         --pull \
         --tag $TAG_PREFIX$MAKER_TEXLIVE_SCHEME \
-        --file "$MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME/Dockerfile" \
-        $MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME/
+        --file "$MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.Dockerfile" \
+        $MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.
 
       # Loop over each additional tag
       for TAG_OTHER in $TAG_OTHERS; do
