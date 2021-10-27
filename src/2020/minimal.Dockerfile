@@ -1,4 +1,4 @@
-FROM philipptempel/docker-ubuntu-tug-texlive:2020-infraonly
+FROM registry.gitlab.com/philipptempel/docker-ubuntu-tug-texlive/2020:infraonly
 
 MAINTAINER Philipp Tempel <docker@philipptempel.me>
 

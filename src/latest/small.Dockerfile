@@ -1,4 +1,4 @@
-FROM philipptempel/docker-ubuntu-tug-texlive:latest-basic
+FROM registry.gitlab.com/philipptempel/docker-ubuntu-tug-texlive/latest:basic
 
 MAINTAINER Philipp Tempel <docker@philipptempel.me>
 
