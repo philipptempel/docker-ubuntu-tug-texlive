@@ -20,45 +20,45 @@ infraonly-scheme:
   extends: .docker-build
   stage: infraonly
   script:
-    - ./maker.sh build "$TEXLIVE_YEAR" "infraonly"
-    - ./maker.sh push "$TEXLIVE_YEAR" "infraonly"
+    - ./src/maker.sh build "$TEXLIVE_YEAR" "infraonly"
+    - ./src/maker.sh push "$TEXLIVE_YEAR" "infraonly"
 
 
 minimal-scheme:
   extends: .docker-build
   stage: minimal
   script:
-    - ./maker.sh build "$TEXLIVE_YEAR" "minimal"
-    - ./maker.sh push "$TEXLIVE_YEAR" "minimal"
+    - ./src/maker.sh build "$TEXLIVE_YEAR" "minimal"
+    - ./src/maker.sh push "$TEXLIVE_YEAR" "minimal"
 
 
 basic-scheme:
   extends: .docker-build
   stage: basic
   script:
-    - ./maker.sh build "$TEXLIVE_YEAR" "basic"
-    - ./maker.sh push "$TEXLIVE_YEAR" "basic"
+    - ./src/maker.sh build "$TEXLIVE_YEAR" "basic"
+    - ./src/maker.sh push "$TEXLIVE_YEAR" "basic"
 
 
 small-scheme:
   extends: .docker-build
   stage: small
   script:
-    - ./maker.sh build "$TEXLIVE_YEAR" "small"
-    - ./maker.sh push "$TEXLIVE_YEAR" "small"
+    - ./src/maker.sh build "$TEXLIVE_YEAR" "small"
+    - ./src/maker.sh push "$TEXLIVE_YEAR" "small"
 
 
 medium-scheme:
   extends: .docker-build
   stage: medium
   script:
-    - ./maker.sh build "$TEXLIVE_YEAR" "medium"
-    - ./maker.sh push "$TEXLIVE_YEAR" "medium"
+    - ./src/maker.sh build "$TEXLIVE_YEAR" "medium"
+    - ./src/maker.sh push "$TEXLIVE_YEAR" "medium"
 
 
 full-scheme:
   extends: .docker-build
   stage: full
   script:
-    - ./maker.sh build "$TEXLIVE_YEAR" "full"
-    - ./maker.sh push "$TEXLIVE_YEAR" "full"
+    - ./src/maker.sh build "$TEXLIVE_YEAR" "full"
+    - ./src/maker.sh push "$TEXLIVE_YEAR" "full"
