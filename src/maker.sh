@@ -21,6 +21,13 @@ TAG_OTHERS="$CI_REGISTRY_IMAGE/$MAKER_TEXLIVE_YEAR: $DOCKER_REGISTRY/$DOCKER_PRO
 
 set -x
 
+PRG="$0"
+while [ -h "$PRG" ] ; do
+   PRG=`readlink "$PRG"`
+done
+
+SRCDIR=`dirname $PRG`
+
 case $MAKER_ACTION in
   build)
     for MAKER_TEXLIVE_SCHEME in $MAKER_TEXLIVE_SCHEMES; do
@@ -28,8 +35,8 @@ case $MAKER_ACTION in
       docker build \
         --pull \
         --tag $TAG_PREFIX$MAKER_TEXLIVE_SCHEME \
-        --file "$MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.Dockerfile" \
-        $MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.
+        --file $SRCDIR/"$MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.Dockerfile" \
+        $SRCDIR/$MAKER_TEXLIVE_DIRECTORY
 
       # Loop over each additional tag
       for TAG_OTHER in $TAG_OTHERS; do
