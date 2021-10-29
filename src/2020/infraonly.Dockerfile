@@ -4,28 +4,37 @@ MAINTAINER Philipp Tempel <docker@philipptempel.me>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update -qy \
-  && apt-get install -qy apt-utils \
-  && apt-get upgrade -qy \
-  && apt-get dist-upgrade -qy \
-  && apt-get update -qy \
-  && apt-get install -qy \
+RUN apt-get update \
+    --quiet \
+  && apt-get install \
+    --quiet \
+    --assume-yes \
+    apt-utils \
+  && apt-get upgrade \
+    --quiet \
+    --assume-yes \
+  && apt-get dist-upgrade \
+    --quiet \
+    --assume-yes \
+  && apt-get update \
+    --quiet \
+  && apt-get install \
+    --quiet \
+    --assume-yes \
   curl \
-  perl \
-  wget \
-  zip \
-  git \
   gcc \
+  ghostscript \
+  git \
+  gnuplot \
+  imagemagick \
   make \
   musl \
-  rsync \
-  ghostscript \
-  imagemagick \
+  perl \
   python-pygments \
   python3-pygments \
-  gnuplot
-
-
+  rsync \
+  wget \
+  zip
 
 ADD texlive.profile /tmp/texlive/texlive.profile
 
