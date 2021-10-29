@@ -48,6 +48,18 @@ RUN cd /tmp/texlive/ \
     && cd /tmp \
     && rm -rf /tmp/texlive
 
-ENV PATH="/usr/local/texlive/bin/x86_64-linux/:$PATH" \
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+RUN echo 'PATH="/usr/local/texlive/bin/x86_64-linux:$PATH"' > /etc/profile.d/latex.sh \
+    && echo 'MANPATH="/usr/local/texlive/texmf-dist/doc/man:$MANPATH"' >> /etc/profile.d/latex.sh \
+    && echo 'INFOPATH="/usr/local/texlive/texmf-dist/doc/info:$INFOPATH"' >> /etc/profile.d/latex.sh \
+    && echo '' >> /etc/profile.d/latex.sh
+
+ENV PATH="/usr/local/texlive/bin/x86_64-linux:$PATH" \
   MANPATH="/usr/local/texlive/texmf-dist/doc/man:$MANPATH" \
   INFOPATH="/usr/local/texlive/texmf-dist/doc/info:$INFOPATH"
+
+WORKDIR /latex
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["tlmgr"]
