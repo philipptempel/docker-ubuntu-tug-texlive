@@ -3,12 +3,12 @@
 # installation profile at installation time.
 selected_scheme scheme-infraonly
 TEXDIR /usr/local/texlive/
-TEXMFCONFIG ~/.texlive/texmf-config
-TEXMFHOME ~/texmf
+TEXMFCONFIG ${HOME}/.texlive/texmf-config
+TEXMFHOME ${HOME}/.texlive/texmf
 TEXMFLOCAL /usr/local/texlive/texmf-local
 TEXMFSYSCONFIG /usr/local/texlive/texmf-config
 TEXMFSYSVAR /usr/local/texlive/texmf-var
-TEXMFVAR ~/.texlive/texmf-var
+TEXMFVAR ${HOME}/.texlive/texmf-var
 binary_x86_64-linux 1
 instopt_adjustpath 0
 instopt_adjustrepo 1
