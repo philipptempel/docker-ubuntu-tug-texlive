@@ -7,5 +7,5 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN tlmgr install scheme-small && tlmgr install scheme-small
 
 RUN luaotfload-tool --cache=erase \
-  && luaotfload-tool --force \
+  && luaotfload-tool --update --force \
   && texhash

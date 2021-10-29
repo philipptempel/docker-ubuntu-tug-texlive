@@ -8,5 +8,5 @@ RUN tlmgr install scheme-small
 RUN tlmgr install scheme-small
 
 RUN luaotfload-tool --cache=erase \
-  && luaotfload-tool --force \
+  && luaotfload-tool --update --force \
   && texhash

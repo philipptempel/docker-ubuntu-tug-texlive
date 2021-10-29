@@ -8,5 +8,5 @@ RUN tlmgr install scheme-full
 RUN tlmgr install scheme-full
 
 RUN luaotfload-tool --cache=erase \
-  && luaotfload-tool --force \
+  && luaotfload-tool --update --force \
   && texhash
