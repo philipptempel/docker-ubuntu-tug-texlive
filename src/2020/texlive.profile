@@ -2,7 +2,7 @@
 # It will NOT be updated and reflects only the
 # installation profile at installation time.
 selected_scheme scheme-infraonly
-TEXDIR /usr/local/texlive/
+TEXDIR /usr/local/texlive
 TEXMFCONFIG ${HOME}/.texlive/texmf-config
 TEXMFHOME ${HOME}/.texlive/texmf
 TEXMFLOCAL /usr/local/texlive/texmf-local
