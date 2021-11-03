@@ -2,12 +2,12 @@
 # It will NOT be updated and reflects only the
 # installation profile at installation time.
 selected_scheme scheme-infraonly
-TEXDIR /usr/local/texlive
+TEXDIR /texlive
 TEXMFCONFIG ${HOME}/.texlive/texmf-config
 TEXMFHOME ${HOME}/.texlive/texmf
-TEXMFLOCAL /usr/local/texlive/texmf-local
-TEXMFSYSCONFIG /usr/local/texlive/texmf-config
-TEXMFSYSVAR /usr/local/texlive/texmf-var
+TEXMFLOCAL /texlive/texmf-local
+TEXMFSYSCONFIG /texlive/texmf-config
+TEXMFSYSVAR /texlive/texmf-var
 TEXMFVAR ${HOME}/.texlive/texmf-var
 binary_x86_64-linux 1
 instopt_adjustpath 0
@@ -24,7 +24,7 @@ tlpdbopt_generate_updmap 0
 tlpdbopt_install_docfiles 1
 tlpdbopt_install_srcfiles 1
 tlpdbopt_post_code 1
-tlpdbopt_sys_bin /usr/local/bin
-tlpdbopt_sys_info /usr/local/share/info
-tlpdbopt_sys_man /usr/local/share/man
+tlpdbopt_sys_bin /texlive/bin
+tlpdbopt_sys_info /texlive/share/info
+tlpdbopt_sys_man /texlive/share/man
 tlpdbopt_w32_multi_user 1
