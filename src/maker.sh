@@ -35,8 +35,8 @@ case $MAKER_ACTION in
       docker build \
         --pull \
         --tag $TAG_PREFIX$MAKER_TEXLIVE_SCHEME \
-        --file $SRCDIR/"$MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.Dockerfile" \
-        $SRCDIR/$MAKER_TEXLIVE_DIRECTORY
+        --file "$SRCDIR/$MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.Dockerfile" \
+        $SRCDIR
 
       # Loop over each additional tag
       for TAG_OTHER in $TAG_OTHERS; do
