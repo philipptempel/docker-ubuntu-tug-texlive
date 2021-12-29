@@ -73,5 +73,3 @@ case $MAKER_ACTION in
 esac
 
 set +x
-
-return 0
