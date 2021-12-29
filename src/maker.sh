@@ -33,7 +33,6 @@ case $MAKER_ACTION in
     for MAKER_TEXLIVE_SCHEME in $MAKER_TEXLIVE_SCHEMES; do
       # Build the main image
       docker build \
-        --pull \
         --tag $TAG_PREFIX$MAKER_TEXLIVE_SCHEME \
         --file "$SRCDIR/$MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.Dockerfile" \
         $SRCDIR
