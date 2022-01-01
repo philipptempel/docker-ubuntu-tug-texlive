@@ -52,8 +52,8 @@ RUN groupadd \
 ADD common/entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ADD --chown=latex:latex 2017/texlive.profile /texlive/texlive.profile
-RUN mkdir /latex \
-    && chown -R latex:latex /latex
+RUN mkdir /src \
+    && chown -R latex:latex /src
 
 RUN cd /texlive/ \
     && wget --user=anonymous --password=ftp --no-parent --no-verbose ftp://tug.org/historic/systems/texlive/2017/tlnet-final/install-tl-unx.tar.gz \
@@ -72,6 +72,6 @@ ENV PATH="/texlive/bin/x86_64-linux:$PATH" \
 ADD common/latex-paths.sh /etc/profile.d/latex.sh
 
 USER latex
-WORKDIR /latex
+WORKDIR /src
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["tlmgr"]

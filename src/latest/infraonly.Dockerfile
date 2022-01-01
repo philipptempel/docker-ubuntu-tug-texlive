@@ -54,8 +54,8 @@ RUN groupadd \
 COPY common/entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ADD --chown=latex:latex latest/texlive.profile /texlive/texlive.profile
-RUN mkdir /latex \
-    && chown -R latex:latex /latex
+RUN mkdir /src \
+    && chown -R latex:latex /src
 
 USER latex
 RUN cd /texlive/ \
@@ -75,6 +75,6 @@ ENV PATH="/texlive/bin/x86_64-linux:$PATH" \
 ADD common/latex-paths.sh /etc/profile.d/latex.sh
 
 USER latex
-WORKDIR /latex
+WORKDIR /src
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["tlmgr"]
