@@ -27,6 +27,7 @@ RUN apt-get update \
       git \
       imagemagick \
       libncurses5 libncurses5-dev libncursesw5-dev \
+      lsb-core \
       make \
       musl \
       perl \

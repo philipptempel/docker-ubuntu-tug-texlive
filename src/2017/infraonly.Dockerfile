@@ -27,6 +27,7 @@ RUN apt-get update \
       git \
       gnuplot \
       imagemagick \
+      lsb-core \
       make \
       musl \
       perl \
