@@ -1,14 +1,9 @@
 SHELL=/bin/bash
 
 TEXLIVE_YEAR ?= latest
-CI_REGISTRY ?= registry.gitlab.com
-CI_PROJECT_PATH ?= philipptempel/docker-ubuntu-tug-texlive
-CI_REGISTRY_IMAGE ?= $(CI_REGISTRY)/$(CI_PROJECT_PATH)
-DOCKER_REGISTRY ?= docker.io
-DOCKER_PROJECT_PATH ?= philipptempel/docker-ubuntu-tug-texlive
 
 SCHEMES = infraonly minimal basic small medium full
-SCHEMES_FULL = $(patsubst %,scheme-%,$(SCHEMES))
+BUILDS_FULL = $(patsubst %,build-%,$(SCHEMES))
 PUSHES_FULL = $(patsubst %,push-%,$(SCHEMES))
 
 # order of creation
@@ -19,52 +14,52 @@ PUSHES_FULL = $(patsubst %,push-%,$(SCHEMES))
 # 5) medium
 # 6) full
 
-# all targets
+# All target
 .PHONY: all
 all: build push
 
-# also 
+# Build everything
 .PHONY: build
-build: $(SCHEMES_FULL)
+build: $(BUILDS_FULL)
 
+# Push everything
 .PHONY: push
 push: $(PUSHES_FULL)
 
 # Generic scheme target
-scheme-%:
-	CI_REGISTRY_IMAGE="$(CI_REGISTRY_IMAGE)" \
-	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" \
-	DOCKER_PROJECT_PATH="$(DOCKER_PROJECT_PATH)" \
+build-container-%:
 	./src/maker.sh build $(TEXLIVE_YEAR) $*
 
 # Generic push target
-push-%:
-	CI_REGISTRY_IMAGE="$(CI_REGISTRY_IMAGE)" \
-	DOCKER_REGISTRY="$(DOCKER_REGISTRY)" \
-	DOCKER_PROJECT_PATH="$(DOCKER_PROJECT_PATH)" \
+push-container-%:
 	./src/maker.sh push $(TEXLIVE_YEAR) $*
 
-# Only infrastructure
-.PHONY: infraonly
-infraonly: scheme-infraonly push-infraonly
+# Basic image
+build-infraonly: build-container-infraonly
+push-infraonly: push-container-infraonly
+infraonly: build-infraonly push-infraonly
 
-# Minimal depends on infrastructure
-.PHONY: minimal
-minimal: infraonly scheme-minimal push-minimal
+# Minimal depends on infraonly
+build-minimal: build-infraonly build-container-minimal
+push-minimal: push-infraonly push-container-minimal
+minimal: infraonly build-minimal push-minimal
 
 # Basic depends on minimal
-.PHONY: basic
-basic: minimal scheme-basic push-basic
+build-basic: build-minimal build-container-basic
+push-basic: push-minimal push-container-basic
+basic: minimal build-basic push-basic
 
 # Small depends on basic
-.PHONY: small
-small: basic scheme-small push-small
+build-small: build-basic build-container-small
+push-small: push-basic push-container-small
+small: basic build-small push-small
 
 # Medium depends on small
-.PHONY: medium
-medium: small scheme-medium push-medium
+build-medium: build-small build-container-medium
+push-medium: push-small push-container-medium
+medium: small build-medium push-medium
 
 # Full depends on medium
-.PHONY: full
-full: medium scheme-full push-full
-
+build-full: build-medium build-container-full
+push-full: push-medium push-container-full
+full: medium build-full push-full

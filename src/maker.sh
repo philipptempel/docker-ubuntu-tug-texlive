@@ -5,21 +5,31 @@ if [ $# -lt 3 ]; then
     return 1
 fi
 
-MAKER_ACTION="$1"; shift;
-MAKER_TEXLIVE_YEAR="$1"; shift;
-MAKER_TEXLIVE_SCHEMES="$@"
-MAKER_TEXLIVE_LATEST=false
-MAKER_TEXLIVE_DIRECTORY="$MAKER_TEXLIVE_YEAR"
+DEBUG=""
 
-if [ $MAKER_TEXLIVE_YEAR = "latest" ]; then
-  MAKER_TEXLIVE_LATEST=true
-  MAKER_TEXLIVE_YEAR="2021"
+ACTION="$1"; shift;
+TEXLIVE_YEAR="$1"; shift;
+TEXLIVE_SCHEMES="$@"
+TEXLIVE_LATEST=false
+TEXLIVE_DIRECTORY="$TEXLIVE_YEAR"
+
+CI_REGISTRY=${CI_REGISTRY:-"registry.gitlab.com"}
+CI_PROJECT_PATH=${CI_PROJECT_PATH:-"philipptempel/docker-ubuntu-tug-texlive"}
+CI_REGISTRY_IMAGE=${CI_REGISTRY_IMAGE:-"${CI_REGISTRY}/${CI_PROJECT_PATH}"}
+DOCKER_REGISTRY=${DOCKER_REGISTRY:-"docker.io"}
+DOCKER_PROJECT_PATH=${DOCKER_PROJECT_PATH:-"philipptempel/docker-ubuntu-tug-texlive"}
+
+BFLAGS=${BFLAGS:-""}
+
+
+TAG_PREFIX="$CI_REGISTRY_IMAGE/$TEXLIVE_YEAR:"
+TAG_OTHERS="$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR- $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:$TEXLIVE_YEAR-"
+
+if [ $TEXLIVE_YEAR = "latest" ]; then
+  TEXLIVE_LATEST=true
+  TEXTLIVE_YEAR="2021"
+  TAG_OTHERS="$TAG_OTHERS $CI_REGISTRY_IMAGE/latest: $CI_REGISTRY_IMAGE:latest- $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:latest-"
 fi
-
-TAG_PREFIX="$CI_REGISTRY_IMAGE/$MAKER_TEXLIVE_YEAR:"
-TAG_OTHERS="$CI_REGISTRY_IMAGE:$MAKER_TEXLIVE_YEAR- $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:$MAKER_TEXLIVE_YEAR-"
-
-set -x
 
 PRG="$0"
 while [ -h "$PRG" ] ; do
@@ -28,44 +38,33 @@ done
 
 SRCDIR=`dirname $PRG`
 
-case $MAKER_ACTION in
+case $ACTION in
   build)
-    for MAKER_TEXLIVE_SCHEME in $MAKER_TEXLIVE_SCHEMES; do
+    for TEXLIVE_SCHEME in $TEXLIVE_SCHEMES; do
       # Build the main image
-      docker build \
-        --tag $TAG_PREFIX$MAKER_TEXLIVE_SCHEME \
-        --file "$SRCDIR/$MAKER_TEXLIVE_DIRECTORY/$MAKER_TEXLIVE_SCHEME.Dockerfile" \
+      $DEBUG docker build \
+        --tag $TAG_PREFIX$TEXLIVE_SCHEME \
+        --file "$SRCDIR/$TEXLIVE_DIRECTORY/$TEXLIVE_SCHEME.Dockerfile" \
+        $BFLAGS \
         $SRCDIR
 
       # Loop over each additional tag
       for TAG_OTHER in $TAG_OTHERS; do
-        docker tag "$TAG_PREFIX$MAKER_TEXLIVE_SCHEME" "$TAG_OTHER$MAKER_TEXLIVE_SCHEME"
-        if [ $MAKER_TEXLIVE_LATEST ]; then
-          docker tag "$TAG_PREFIX$MAKER_TEXLIVE_SCHEME" "$( echo "$TAG_OTHER$MAKER_TEXLIVE_SCHEME" | sed s/$MAKER_TEXLIVE_YEAR/latest/g )"
-        fi
-        # Tag only the "FULL" scheme as an "un-schemed" image
-        if [ $MAKER_TEXLIVE_SCHEME = "full" ]; then
-          docker tag "$TAG_PREFIX$MAKER_TEXLIVE_SCHEME" "$( echo "$TAG_OTHER$MAKER_TEXLIVE_SCHEME" | sed s/$MAKER_TEXLIVE_YEAR.*/latest/g )"
-        fi
+        $DEBUG docker tag "$TAG_PREFIX$TEXLIVE_SCHEME" "$TAG_OTHER$TEXLIVE_SCHEME"
+
       done
 
     done
     ;;
   push)
-    for MAKER_TEXLIVE_SCHEME in $MAKER_TEXLIVE_SCHEMES; do
+    for TEXLIVE_SCHEME in $TEXLIVE_SCHEMES; do
       # Push the main image
-      docker push "$TAG_PREFIX$MAKER_TEXLIVE_SCHEME"
+      $DEBUG docker push "$TAG_PREFIX$TEXLIVE_SCHEME"
 
       # Loop over each additional tag
       for TAG_OTHER in $TAG_OTHERS; do
-        docker push "$TAG_OTHER$MAKER_TEXLIVE_SCHEME"
-        if [ $MAKER_TEXLIVE_LATEST ]; then
-          docker push "$( echo "$TAG_OTHER$MAKER_TEXLIVE_SCHEME" | sed s/$MAKER_TEXLIVE_YEAR/latest/g )"
-        fi
-        # Tag only the "FULL" scheme as an "un-schemed" image
-        if [ $MAKER_TEXLIVE_SCHEME = "full" ]; then
-          docker push "$( echo "$TAG_OTHER$MAKER_TEXLIVE_SCHEME" | sed s/$MAKER_TEXLIVE_YEAR.*/latest/g )"
-        fi
+        $DEBUG docker push "$TAG_OTHER$TEXLIVE_SCHEME"
+
       done
 
     done
