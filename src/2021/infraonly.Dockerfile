@@ -27,12 +27,15 @@ RUN apt-get update \
       git \
       gnuplot \
       imagemagick \
+      libncurses5 libncurses5-dev libncursesw5-dev \
+      lsb-core \
       make \
       musl \
       perl \
       python-pygments \
       python3-pygments \
       rsync \
+      vim \
       wget \
       zip
 

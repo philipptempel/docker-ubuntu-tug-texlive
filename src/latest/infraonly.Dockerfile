@@ -25,6 +25,7 @@ RUN apt-get update \
       gcc \
       ghostscript \
       git \
+      gnuplot \
       imagemagick \
       libncurses5 libncurses5-dev libncursesw5-dev \
       lsb-core \
@@ -34,7 +35,6 @@ RUN apt-get update \
       python-pygments \
       python3-pygments \
       rsync \
-      sudo \
       vim \
       wget \
       zip
