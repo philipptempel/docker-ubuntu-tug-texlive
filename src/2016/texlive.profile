@@ -27,4 +27,4 @@ tlpdbopt_post_code 1
 tlpdbopt_sys_bin /texlive/bin
 tlpdbopt_sys_info /texlive/share/info
 tlpdbopt_sys_man /texlive/share/man
-tlpdbopt_w32_multi_user 1
+tlpdbopt_w32_multi_user 0
