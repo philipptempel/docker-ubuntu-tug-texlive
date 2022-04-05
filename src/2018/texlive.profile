@@ -1,14 +1,14 @@
-# texlive.profile written on Thu Dec  17 09:31:00 2020 UTC
+# texlive.profile written on Tue Apr  5 08:11:30 2022 UTC
 # It will NOT be updated and reflects only the
 # installation profile at installation time.
 selected_scheme scheme-infraonly
 TEXDIR /texlive
-TEXMFCONFIG ${HOME}/.texlive/texmf-config
-TEXMFHOME ${HOME}/.texlive/texmf
+TEXMFCONFIG ~/.texlive/texmf-config
+TEXMFHOME ~/texmf
 TEXMFLOCAL /texlive/texmf-local
 TEXMFSYSCONFIG /texlive/texmf-config
 TEXMFSYSVAR /texlive/texmf-var
-TEXMFVAR ${HOME}/.texlive/texmf-var
+TEXMFVAR ~/.texlive/texmf-var
 binary_x86_64-linux 1
 instopt_adjustpath 0
 instopt_adjustrepo 1
