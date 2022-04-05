@@ -10,7 +10,7 @@ TEXMFSYSCONFIG /texlive/texmf-config
 TEXMFSYSVAR /texlive/texmf-var
 TEXMFVAR ~/.texlive/texmf-var
 binary_x86_64-linux 1
-instopt_adjustpath 0
+instopt_adjustpath 1
 instopt_adjustrepo 1
 instopt_letter 0
 instopt_portable 0
