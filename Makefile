@@ -3,8 +3,8 @@ SHELL=/bin/bash
 TEXLIVE_YEAR ?= latest
 
 SCHEMES = infraonly minimal basic small medium full
-BUILDS_FULL = $(patsubst %,build-%,$(SCHEMES))
-PUSHES_FULL = $(patsubst %,push-%,$(SCHEMES))
+BUILDS_ALL = $(patsubst %,build-%,$(SCHEMES))
+PUSHES_ALL = $(patsubst %,push-%,$(SCHEMES))
 
 # order of creation
 # 1) infraonly
@@ -20,11 +20,11 @@ all: build push
 
 # Build everything
 .PHONY: build
-build: $(BUILDS_FULL)
+build: $(BUILDS_ALL)
 
 # Push everything
 .PHONY: push
-push: $(PUSHES_FULL)
+push: $(PUSHES_ALL)
 
 # Generic scheme target
 build-container-%:
