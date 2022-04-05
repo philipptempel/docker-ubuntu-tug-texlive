@@ -16,7 +16,7 @@ stages:
     - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" "$DOCKER_REGISTRY"
 
 
-infraonly-scheme:
+texlive:infraonly:
   extends: .docker-build
   stage: infraonly
   script:
@@ -24,41 +24,46 @@ infraonly-scheme:
     - ./src/maker.sh push "$TEXLIVE_YEAR" "infraonly"
 
 
-minimal-scheme:
+texlive:minimal:
   extends: .docker-build
   stage: minimal
+  needs: infraonly
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "minimal"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "minimal"
 
 
-basic-scheme:
+texlive:basic:
   extends: .docker-build
   stage: basic
+  needs: minimal
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "basic"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "basic"
 
 
-small-scheme:
+texlive:small:
   extends: .docker-build
   stage: small
+  needs: basic
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "small"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "small"
 
 
-medium-scheme:
+texlive:medium:
   extends: .docker-build
   stage: medium
+  needs: small
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "medium"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "medium"
 
 
-full-scheme:
+texlive:full:
   extends: .docker-build
   stage: full
+  needs: medium
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "full"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "full"
