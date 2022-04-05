@@ -56,6 +56,7 @@ ADD --chown=latex:latex 2016/texlive.profile /texlive/install/texlive.profile
 RUN mkdir /src \
     && chown -R latex:latex /src
 
+USER latex
 RUN cd /texlive/install/ \
     && wget --user=anonymous --password=ftp --no-parent --no-verbose ftp://tug.org/historic/systems/texlive/2016/tlnet-final/install-tl-unx.tar.gz \
     && tar -xvf install-tl-unx.tar.gz \
@@ -65,6 +66,7 @@ RUN cd /texlive/install/ \
     && rm -rf /texlive/install
 
 USER root
+RUN chown -R latex:latex /texlive
 ENV PATH="/texlive/bin/x86_64-linux:$PATH" \
     MANPATH="/texlive/texmf-dist/doc/man:$MANPATH" \
     INFOPATH="/texlive/texmf-dist/doc/info:$INFOPATH"

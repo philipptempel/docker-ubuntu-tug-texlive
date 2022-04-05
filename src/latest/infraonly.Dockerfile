@@ -68,6 +68,7 @@ RUN cd /texlive/install/ \
     && rm -rf /texlive/install
 
 USER root
+RUN chown -R latex:latex /texlive
 ENV PATH="/texlive/bin/x86_64-linux:$PATH" \
     MANPATH="/texlive/texmf-dist/doc/man:$MANPATH" \
     INFOPATH="/texlive/texmf-dist/doc/info:$INFOPATH"
