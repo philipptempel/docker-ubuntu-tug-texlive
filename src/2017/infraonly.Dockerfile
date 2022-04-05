@@ -47,24 +47,22 @@ RUN groupadd \
         --create-home \
         --password=$(perl -e'print crypt("latex", "latex")') \
         latex \
-    && mkdir /texlive \
+    && mkdir -p /texlive/install/ \
     && chown -R latex:latex /texlive
 
 ADD common/entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
-ADD --chown=latex:latex 2017/texlive.profile /texlive/texlive.profile
+ADD --chown=latex:latex 2017/texlive.profile /texlive/install/texlive.profile
 RUN mkdir /src \
     && chown -R latex:latex /src
 
-RUN cd /texlive/ \
+RUN cd /texlive/install/ \
     && wget --user=anonymous --password=ftp --no-parent --no-verbose ftp://tug.org/historic/systems/texlive/2017/tlnet-final/install-tl-unx.tar.gz \
     && tar -xvf install-tl-unx.tar.gz \
     && cd install-tl-*/ \
-    && ./install-tl -profile=/tmp/texlive/texlive.profile -repository=ftp://tug.org/historic/systems/texlive/2017/tlnet-final/ \
+    && ./install-tl -profile=/texlive/install/texlive.profile -repository=ftp://tug.org/historic/systems/texlive/2017/tlnet-final/ \
     && cd /texlive \
-    && rm -rf /texlive/install-tl-* \
-    && rm -rf /texlive/install-tl \
-    && rm -rf /texlive/texlive.profile
+    && rm -rf /texlive/install
 
 USER root
 ENV PATH="/texlive/bin/x86_64-linux:$PATH" \
