@@ -27,7 +27,8 @@ texlive:infraonly:
 texlive:minimal:
   extends: .docker-build
   stage: minimal
-  needs: infraonly
+  needs:
+    - texlive:infraonly
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "minimal"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "minimal"
@@ -36,7 +37,8 @@ texlive:minimal:
 texlive:basic:
   extends: .docker-build
   stage: basic
-  needs: minimal
+  needs:
+    - texlive:minimal
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "basic"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "basic"
@@ -45,7 +47,8 @@ texlive:basic:
 texlive:small:
   extends: .docker-build
   stage: small
-  needs: basic
+  needs:
+    - texlive:basic
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "small"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "small"
@@ -54,7 +57,8 @@ texlive:small:
 texlive:medium:
   extends: .docker-build
   stage: medium
-  needs: small
+  needs:
+    - texlive:small
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "medium"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "medium"
@@ -63,7 +67,8 @@ texlive:medium:
 texlive:full:
   extends: .docker-build
   stage: full
-  needs: medium
+  needs:
+    - texlive:medium
   script:
     - ./src/maker.sh build "$TEXLIVE_YEAR" "full"
     - ./src/maker.sh push "$TEXLIVE_YEAR" "full"
