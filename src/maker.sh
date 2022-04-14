@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $# -lt 3 ]; then
-    >&2 echo "Illegal number of parameters"
+    >&2 echo "Illegal number of parameters. Must be 3 but received only $#"
     return 1
 fi
 
@@ -10,8 +10,8 @@ DEBUG=""
 ACTION="$1"; shift;
 TEXLIVE_YEAR="$1"; shift;
 TEXLIVE_SCHEMES="$@"
-TEXLIVE_LATEST=false
-TEXLIVE_DIRECTORY="$TEXLIVE_YEAR"
+TEXLIVE_REPO=${TEXLIVE_REPO:-"http://mirrors.ctan.org/systems/texlive/tlnet/"}
+UBUNTU_FLAVOR=${UBUNTU_FLAVOR:-"focal"}
 
 CI_REGISTRY=${CI_REGISTRY:-"registry.gitlab.com"}
 CI_PROJECT_PATH=${CI_PROJECT_PATH:-"philipptempel/docker-ubuntu-tug-texlive"}
@@ -31,7 +31,6 @@ TAG_PREFIX="$CI_REGISTRY_IMAGE/$TEXLIVE_YEAR:"
 TAG_OTHERS="$CI_REGISTRY_IMAGE:$TEXLIVE_YEAR- $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:$TEXLIVE_YEAR-"
 
 if [ ! -d "$SRCDIR/$TEXLIVE_YEAR" ]; then
-  TEXLIVE_DIRECTORY="latest"
   TAG_OTHERS="$TAG_OTHERS $CI_REGISTRY_IMAGE/latest: $CI_REGISTRY_IMAGE:latest- $DOCKER_REGISTRY/$DOCKER_PROJECT_PATH:latest-"
 fi
 
@@ -41,17 +40,21 @@ case $ACTION in
       # Build the main image
       $DEBUG docker build \
         --tag $TAG_PREFIX$TEXLIVE_SCHEME \
-        --file "$SRCDIR/$TEXLIVE_DIRECTORY/$TEXLIVE_SCHEME.Dockerfile" \
+        --build-arg "UBUNTU_FLAVOR=${UBUNTU_FLAVOR}" \
+        --build-arg "TEXLIVE_YEAR=${TEXLIVE_YEAR}" \
+        --build-arg "TEXLIVE_REPO=${TEXLIVE_REPO}" \
+        --build-arg "TEXLIVE_SCHEME=${TEXLIVE_SCHEME}" \
+        --file "$SRCDIR/$TEXLIVE_SCHEME.Dockerfile" \
         $BFLAGS \
-        $SRCDIR
+        $SRCDIR || exit 1
 
       # Loop over each additional tag
       for TAG_OTHER in $TAG_OTHERS; do
         $DEBUG docker tag "$TAG_PREFIX$TEXLIVE_SCHEME" "$TAG_OTHER$TEXLIVE_SCHEME"
 
-      done
+      done || exit 1
 
-    done
+    done || exit 1
     ;;
   push)
     for TEXLIVE_SCHEME in $TEXLIVE_SCHEMES; do
@@ -62,10 +65,12 @@ case $ACTION in
       for TAG_OTHER in $TAG_OTHERS; do
         $DEBUG docker push "$TAG_OTHER$TEXLIVE_SCHEME"
 
-      done
+      done || exit 1
 
-    done
+    done || exit 1
     ;;
-esac
+esac || exit 1
 
 set +x
+
+exit 0

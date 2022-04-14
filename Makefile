@@ -2,11 +2,12 @@ SHELL=/bin/bash
 
 TEXLIVE_YEAR ?= latest
 
-SCHEMES = infraonly minimal basic small medium full
+SCHEMES = ubuntu infraonly minimal basic small medium full
 BUILDS_ALL = $(patsubst %,build-%,$(SCHEMES))
 PUSHES_ALL = $(patsubst %,push-%,$(SCHEMES))
 
 # order of creation
+# 0) ubuntu
 # 1) infraonly
 # 2) minimal
 # 3) basic
@@ -35,9 +36,14 @@ push-container-%:
 	./src/maker.sh push $(TEXLIVE_YEAR) $*
 
 # Basic image
-build-infraonly: build-container-infraonly
-push-infraonly: push-container-infraonly
-infraonly: build-infraonly push-infraonly
+build-ubuntu: build-container-ubuntu
+push-ubuntu: push-container-ubuntu
+ubuntu: build-ubuntu push-ubuntu
+
+# Infraonly depends on ubuntu
+build-infraonly: build-ubuntu build-container-infraonly
+push-infraonly: push-ubuntu push-container-infraonly
+infraonly: ubuntu build-infraonly push-infraonly
 
 # Minimal depends on infraonly
 build-minimal: build-infraonly build-container-minimal

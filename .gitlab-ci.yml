@@ -1,4 +1,5 @@
 stages:
+  - ubuntu
   - infraonly
   - minimal
   - basic
@@ -14,6 +15,14 @@ stages:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" "$DOCKER_REGISTRY"
+
+
+texlive:ubuntu:
+  extends: .docker-build
+  stage: ubuntu
+  script:
+    - ./src/maker.sh build "$TEXLIVE_YEAR" "ubuntu"
+    - ./src/maker.sh push "$TEXLIVE_YEAR" "ubuntu"
 
 
 texlive:infraonly:
