@@ -2,6 +2,7 @@ SHELL=/bin/bash
 
 TEXLIVE_YEAR ?= latest
 TEXLIVE_REPO ?= http://mirrors.ctan.org/systems/texlive/tlnet/
+UBUNTU_FLAVOR ?= focal
 
 SCHEMES = ubuntu infraonly minimal basic small medium full
 BUILDS_ALL = $(patsubst %,build-%,$(SCHEMES))
