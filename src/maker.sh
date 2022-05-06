@@ -35,6 +35,20 @@ if [ ! -d "$SRCDIR/$TEXLIVE_YEAR" ]; then
 fi
 
 case $ACTION in
+  clean)
+    for TEXLIVE_SCHEME in $TEXLIVE_SCHEMES; do
+      # Loop over each additional tag
+      for TAG_OTHER in $TAG_OTHERS; do
+        $DEBUG docker rmi --force "$TAG_OTHER$TEXLIVE_SCHEME" || true
+
+      done || exit 1
+
+      # First, remove old tag
+      $DEBUG docker rmi --force $TAG_PREFIX$TEXLIVE_SCHEME || true
+
+    done || exit 1
+    ;;
+
   build)
     for TEXLIVE_SCHEME in $TEXLIVE_SCHEMES; do
       # Build the main image
@@ -56,6 +70,7 @@ case $ACTION in
 
     done || exit 1
     ;;
+
   push)
     for TEXLIVE_SCHEME in $TEXLIVE_SCHEMES; do
       # Push the main image
