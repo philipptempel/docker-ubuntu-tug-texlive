@@ -34,56 +34,33 @@ push: $(PUSHES_ALL)
 .PHONY: clean
 clean: $(CLEANS_ALL)
 
-# Generic scheme target
-build-container-%:
+# Test everything
+.PHONY: test
+test: $(TEST_ALL)
+
+# Generic targets
+build-%:
 	./src/maker.sh build $(TEXLIVE_YEAR) $*
 
-# Generic push target
-push-container-%:
+push-%:
 	./src/maker.sh push $(TEXLIVE_YEAR) $*
 
-# Generic clean target
-clean-container-%:
+clean-%:
 	./src/maker.sh clean $(TEXLIVE_YEAR) $*
 
-# Basic image
-build-ubuntu: build-container-ubuntu
-push-ubuntu: push-container-ubuntu
-clean-ubuntu: clean-container-ubuntu
+test-%:
+	./src/test.sh $(TEXLIVE_YEAR) $*
+
 ubuntu: build-ubuntu push-ubuntu
 
-# Infraonly depends on ubuntu
-build-infraonly: build-container-infraonly
-push-infraonly: push-container-infraonly
-clean-infraonly: clean-container-infraonly
-infraonly: ubuntu build-infraonly push-infraonly
+infraonly: build-infraonly push-infraonly
 
-# Minimal depends on infraonly
-build-minimal: build-container-minimal
-push-minimal: push-container-minimal
-clean-minimal: clean-container-minimal
-minimal: infraonly build-minimal push-minimal
+minimal: build-minimal push-minimal
 
-# Basic depends on minimal
-build-basic: build-container-basic
-push-basic: push-container-basic
-clean-basic: clean-container-basic
-basic: minimal build-basic push-basic
+basic: build-basic push-basic
 
-# Small depends on basic
-build-small: build-container-small
-push-small: push-container-small
-clean-small: clean-container-small
-small: basic build-small push-small
+small: build-small push-small
 
-# Medium depends on small
-build-medium: build-container-medium
-push-medium: push-container-medium
-clean-medium: clean-container-medium
-medium: small build-medium push-medium
+medium: build-medium push-medium
 
-# Full depends on medium
-build-full: build-container-full
-push-full: push-container-full
-clean-full: clean-container-full
-full: medium build-full push-full
+full: build-full push-full
