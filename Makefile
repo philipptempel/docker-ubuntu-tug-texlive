@@ -8,6 +8,7 @@ SCHEMES = ubuntu infraonly minimal basic small medium full
 BUILDS_ALL = $(patsubst %,build-%,$(SCHEMES))
 PUSHES_ALL = $(patsubst %,push-%,$(SCHEMES))
 CLEANS_ALL = $(patsubst %,clean-%,$(SCHEMES))
+TEST_ALL = $(patsubst %,test-%,$(SCHEMES))
 
 # order of creation
 # 0) ubuntu
