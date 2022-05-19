@@ -18,7 +18,7 @@ CLEANS_ALL = $(patsubst %,clean-%,$(SCHEMES))
 # 5) medium
 # 6) full
 
-# All target
+# ALL target
 .PHONY: all
 all: build push
 
