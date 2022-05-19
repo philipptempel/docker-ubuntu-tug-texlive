@@ -17,7 +17,7 @@ SRCDIR=`dirname $PRG`
 ACTION="$1"; shift;
 
 # Include and parse constants
-.$SRCDIR/constants.sh
+. $SRCDIR/constants.sh
 
 case $ACTION in
   clean)

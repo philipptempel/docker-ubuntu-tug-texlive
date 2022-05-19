@@ -15,7 +15,7 @@ SRCDIR=`dirname $PRG`
 . $SRCDIR/functions.sh
 
 # Include and parse constants
-.$SRCDIR/constants.sh
+. $SRCDIR/constants.sh
 
 for TEXLIVE_SCHEME in $TEXLIVE_SCHEMES; do
   # Get image's main tag and all secondary tags
