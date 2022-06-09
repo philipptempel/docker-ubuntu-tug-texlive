@@ -41,27 +41,27 @@ test: $(TEST_ALL)
 
 # Generic targets
 build-%:
-	./src/maker.sh build $(TEXLIVE_YEAR) $*
+	TEXLIVE_YEAR="$(TEXLIVE_YEAR)" ./src/maker.sh build $*
 
 push-%:
-	./src/maker.sh push $(TEXLIVE_YEAR) $*
+	TEXLIVE_YEAR="$(TEXLIVE_YEAR)" ./src/maker.sh push $*
 
 clean-%:
-	./src/maker.sh clean $(TEXLIVE_YEAR) $*
+	TEXLIVE_YEAR="$(TEXLIVE_YEAR)" ./src/maker.sh clean $*
 
 test-%:
-	./src/test.sh $(TEXLIVE_YEAR) $*
+	TEXLIVE_YEAR="$(TEXLIVE_YEAR)" ./src/test.sh $*
 
 ubuntu: build-ubuntu push-ubuntu
 
-infraonly: build-infraonly push-infraonly
+infraonly: ubuntu build-infraonly push-infraonly
 
-minimal: build-minimal push-minimal
+minimal: infraonly build-minimal push-minimal
 
-basic: build-basic push-basic
+basic: minimal build-basic push-basic
 
-small: build-small push-small
+small: basic build-small push-small
 
-medium: build-medium push-medium
+medium: small build-medium push-medium
 
-full: build-full push-full
+full: medium build-full push-full
