@@ -28,20 +28,24 @@ runin() {
   docker run -it $IMG $@
 }
 
+test_img() {
+  IMG="$1"; shift;
+
+  echo "testing $IMG"
+
+  echo "ubuntu `test_ubuntuversion $IMG`"
+  echo "tlmgr `test_tlmgr $IMG`"
+  echo "python3 `test_python3 $IMG`"
+}
+
 test_ubuntuversion() {
-  IMG="$1";
-  echo "testing $IMG for ubuntu version"
-  runin $1 lsb_release -a | grep -i "description"
+  runin $1 lsb_release -a | grep -i 'description'
 }
 
 test_tlmgr() {
-  IMG="$1";
-  echo "testing $IMG for tlmgr"
   runin $1 which tlmgr
 }
 
 test_python3() {
-  IMG="$1";
-  echo "testing $IMG for python3"
   runin $1 python3 --version
 }

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ $# -lt 3 ]; then
-    >&2 echo "Illegal number of parameters. Must be 3 but received only $#"
-    return 1
+if [ $# -lt 2 ]; then
+    >&2 echo "Illegal number of parameters. Must be 2 or more but received only $#"
+    exit 1
 fi
 
 PRG="$0"

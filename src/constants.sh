@@ -1,7 +1,7 @@
 #!/bin/bash
 
-TEXLIVE_YEAR="$1"; shift;
 TEXLIVE_SCHEMES="$@"
+TEXLIVE_YEAR=${TEXLIVE_YEAR:-"latest"}
 TEXLIVE_REPO=${TEXLIVE_REPO:-"http://mirrors.ctan.org/systems/texlive/tlnet/"}
 UBUNTU_FLAVOR=${UBUNTU_FLAVOR:-"focal"}
 
