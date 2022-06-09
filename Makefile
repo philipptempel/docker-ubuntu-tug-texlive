@@ -1,4 +1,4 @@
-SHELL=/bin/bash
+SHELL=/bin/sh
 
 TEXLIVE_YEAR ?= latest
 TEXLIVE_REPO ?= http://mirrors.ctan.org/systems/texlive/tlnet/
