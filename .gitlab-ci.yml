@@ -8,7 +8,7 @@ stages:
   - full
 
 
-.docker-build:
+.docker:
   image: docker:latest
   services:
     - docker:dind
@@ -18,61 +18,96 @@ stages:
 
 
 texlive:ubuntu:
-  extends: .docker-build
+  extends: .docker
   stage: ubuntu
   script:
-    - ./src/maker.sh build "$TEXLIVE_YEAR" "ubuntu"
-    - ./src/maker.sh push "$TEXLIVE_YEAR" "ubuntu"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" \
+      UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" \
+      TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh build  "ubuntu"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh push "ubuntu"
 
 
 texlive:infraonly:
-  extends: .docker-build
+  extends: .docker
   stage: infraonly
+  needs:
+    - texlive:ubuntu
   script:
-    - ./src/maker.sh build "$TEXLIVE_YEAR" "infraonly"
-    - ./src/maker.sh push "$TEXLIVE_YEAR" "infraonly"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" \
+      UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" \
+      TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh build "infraonly"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh push "infraonly"
 
 
 texlive:minimal:
-  extends: .docker-build
+  extends: .docker
   stage: minimal
-  needs: infraonly
+  needs:
+    - texlive:infraonly
   script:
-    - ./src/maker.sh build "$TEXLIVE_YEAR" "minimal"
-    - ./src/maker.sh push "$TEXLIVE_YEAR" "minimal"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" \
+      UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" \
+      TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh build "minimal"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh push "minimal"
 
 
 texlive:basic:
-  extends: .docker-build
+  extends: .docker
   stage: basic
-  needs: minimal
+  needs:
+    - texlive:minimal
   script:
-    - ./src/maker.sh build "$TEXLIVE_YEAR" "basic"
-    - ./src/maker.sh push "$TEXLIVE_YEAR" "basic"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" \
+      UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" \
+      TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh build "basic"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh push "basic"
 
 
 texlive:small:
-  extends: .docker-build
+  extends: .docker
   stage: small
-  needs: basic
+  needs:
+    - texlive:basic
   script:
-    - ./src/maker.sh build "$TEXLIVE_YEAR" "small"
-    - ./src/maker.sh push "$TEXLIVE_YEAR" "small"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" \
+      UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" \
+      TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh build "small"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh push "small"
 
 
 texlive:medium:
-  extends: .docker-build
+  extends: .docker
   stage: medium
-  needs: small
+  needs:
+    - texlive:small
   script:
-    - ./src/maker.sh build "$TEXLIVE_YEAR" "medium"
-    - ./src/maker.sh push "$TEXLIVE_YEAR" "medium"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" \
+      UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" \
+      TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh build "medium"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh push "medium"
 
 
 texlive:full:
-  extends: .docker-build
+  extends: .docker
   stage: full
-  needs: medium
+  needs:
+    - texlive:medium
   script:
-    - ./src/maker.sh build "$TEXLIVE_YEAR" "full"
-    - ./src/maker.sh push "$TEXLIVE_YEAR" "full"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" \
+      UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" \
+      TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh build "full"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" \
+      ./src/maker.sh push "full"
