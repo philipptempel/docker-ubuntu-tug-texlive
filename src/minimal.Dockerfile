@@ -5,5 +5,5 @@ MAINTAINER Philipp Tempel <docker@philipptempel.me>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN tlmgr install scheme-minimal
-RUN tlmgr install scheme-minimal
+RUN tlmgr --no-persistent-downloads install scheme-minimal
+RUN tlmgr --no-persistent-downloads install scheme-minimal

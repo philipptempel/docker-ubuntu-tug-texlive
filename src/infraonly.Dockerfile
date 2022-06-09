@@ -16,7 +16,10 @@ ADD texlive.profile texlive.profile
 RUN wget --user=anonymous --password=ftp --no-parent --no-verbose $TEXLIVE_REPO/install-tl-unx.tar.gz \
     && tar -xvf install-tl-unx.tar.gz \
     && cd install-tl-*/ \
-    && ./install-tl -profile=/install/texlive.profile -repository=$TEXLIVE_REPO/
+    && ./install-tl \
+        -no-persistent-downloads \
+        -profile=/install/texlive.profile \
+        -repository=$TEXLIVE_REPO/
 
 USER root
 RUN rm -rf /install

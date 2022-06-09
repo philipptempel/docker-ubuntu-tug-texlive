@@ -5,8 +5,8 @@ MAINTAINER Philipp Tempel <docker@philipptempel.me>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN tlmgr install scheme-small
-RUN tlmgr install scheme-small
+RUN tlmgr --no-persistent-downloads install scheme-small
+RUN tlmgr --no-persistent-downloads install scheme-small
 
 RUN luaotfload-tool --cache=erase \
   && luaotfload-tool --update --force \
