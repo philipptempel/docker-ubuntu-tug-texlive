@@ -21,8 +21,8 @@ texlive:ubuntu:
   extends: .docker
   stage: ubuntu
   script:
-    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh build "ubuntu"
-    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh push "ubuntu"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh build "ubuntu"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh push "ubuntu"
 
 
 texlive:infraonly:
@@ -31,8 +31,8 @@ texlive:infraonly:
   needs:
     - texlive:ubuntu
   script:
-    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh build "infraonly"
-    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh push "infraonly"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh build "infraonly"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh push "infraonly"
 
 
 texlive:minimal:
@@ -41,8 +41,8 @@ texlive:minimal:
   needs:
     - texlive:infraonly
   script:
-    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh build "minimal"
-    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh push "minimal"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh build "minimal"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh push "minimal"
 
 
 texlive:basic:
@@ -51,8 +51,8 @@ texlive:basic:
   needs:
     - texlive:minimal
   script:
-    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh build "basic"
-    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh push "basic"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh build "basic"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh push "basic"
 
 
 texlive:small:
@@ -61,8 +61,8 @@ texlive:small:
   needs:
     - texlive:basic
   script:
-    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh build "small"
-    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh push "small"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh build "small"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh push "small"
 
 
 texlive:medium:
@@ -71,8 +71,8 @@ texlive:medium:
   needs:
     - texlive:small
   script:
-    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh build "medium"
-    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh push "medium"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh build "medium"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh push "medium"
 
 
 texlive:full:
@@ -81,5 +81,5 @@ texlive:full:
   needs:
     - texlive:medium
   script:
-    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh build "full"
-    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" ./src/maker.sh push "full"
+    - TEXLIVE_REPO="${TEXLIVE_REPO}" UBUNTU_FLAVOR="${UBUNTU_FLAVOR}" TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh build "full"
+    - TEXLIVE_YEAR="${TEXLIVE_YEAR}" src/maker.sh push "full"
