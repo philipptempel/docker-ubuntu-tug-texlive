@@ -28,7 +28,7 @@ For any further adjustments of the GitLab CI configuration, please refer [to the
 ```yaml
 draft:
   stage: latexmk
-  image: philipptempel/docker-ubuntu-tug-texlive:latest-medium
+  image: registry.gitlab.com/philipptempel/docker-ubuntu-tug-texlive/latest:medium
   except:
     refs:
       - master
@@ -43,7 +43,7 @@ draft:
 
 final:
   stage: latexmk
-  image: philipptempel/docker-ubuntu-tug-texlive:latest-medium
+  image: registry.gitlab.com/philipptempel/docker-ubuntu-tug-texlive/latest:medium
   only:
     refs:
       - master
@@ -62,17 +62,17 @@ final:
 
 The `latest` tag always refers to the current year and a build that is at most 1 week old.
 This way, updated packages will always be included very timely.
-Older i.e., deprecated or archived versions, are also available, however, these will not be updated anymore (neither TeX Live nor the underlying ubuntu will be updated).
+Older i.e., deprecated or archived versions, are also available, however, these will not be updated anymore: only the underlying Ubuntu will be updated monthly with available security fixes, however, TeX Live will not receive any updates as the upstream does not receive updates.
 Every year comes in various flavors representing the different texlive schemes.
 You may choose from the following images matrix
 
 | Scheme | infraonly        | minimal        | basic        | small        | medium        | full        |
 | ------ | ---------------- | -------------- | ------------ | ------------ | ------------- | ----------- |
-| 2022   | latest-infraonly | latest-minimal | latest-basic | latest-small | latest-medium | latest-full |
-| 2021   | 2021-infraonly   | 2021-minimal   | 2021-basic   | 2021-small   | 2021-medium   | 2021-full   |
-| 2020   | 2020-infraonly   | 2020-minimal   | 2020-basic   | 2020-small   | 2020-medium   | 2020-full   |
-| 2019   | 2019-infraonly   | 2019-minimal   | 2019-basic   | 2019-small   | 2019-medium   | 2019-full   |
-| 2018   | 2018-infraonly   | 2018-minimal   | 2018-basic   | 2018-small   | 2018-medium   | 2018-full   |
-| 2017   | 2017-infraonly   | 2017-minimal   | 2017-basic   | 2017-small   | 2017-medium   | 2017-full   |
-| 2016   | 2016-infraonly   | 2016-minimal   | 2016-basic   | 2016-small   | 2016-medium   | 2016-full   |
+| 2022   | latest:infraonly | latest:minimal | latest:basic | latest:small | latest:medium | latest:full |
+| 2021   | 2021:infraonly   | 2021:minimal   | 2021:basic   | 2021:small   | 2021:medium   | 2021:full   |
+| 2020   | 2020:infraonly   | 2020:minimal   | 2020:basic   | 2020:small   | 2020:medium   | 2020:full   |
+| 2019   | 2019:infraonly   | 2019:minimal   | 2019:basic   | 2019:small   | 2019:medium   | 2019:full   |
+| 2018   | 2018:infraonly   | 2018:minimal   | 2018:basic   | 2018:small   | 2018:medium   | 2018:full   |
+| 2017   | 2017:infraonly   | 2017:minimal   | 2017:basic   | 2017:small   | 2017:medium   | 2017:full   |
+| 2016   | 2016:infraonly   | 2016:minimal   | 2016:basic   | 2016:small   | 2016:medium   | 2016:full   |
 
