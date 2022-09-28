@@ -17,6 +17,8 @@ SRCDIR=`dirname $PRG`
 # Include and parse constants
 . $SRCDIR/constants.sh
 
+TEXLIVE_SCHEMES="$@"
+
 for TEXLIVE_SCHEME in $TEXLIVE_SCHEMES; do
   # Get image's main tag and all secondary tags
   MAIN_TAG=$(main_tag ${TEXLIVE_YEAR} ${TEXLIVE_SCHEME})
